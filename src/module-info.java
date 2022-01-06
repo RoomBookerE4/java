@@ -1,3 +1,4 @@
 module projetInfraJava {
-	//aaaa
+	requires java.sql;
+	requires java.desktop;
 }
