@@ -1,4 +1,4 @@
-package view;
+package src.view;
 
 
 
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import controller.LoginAction;
+import src.controller.LoginAction;
 
 public class LoginView extends JFrame {
 	

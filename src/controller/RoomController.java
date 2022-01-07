@@ -1,4 +1,4 @@
-package controller;
+package src.controller;
 
 public class RoomController {
 
