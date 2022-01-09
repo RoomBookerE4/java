@@ -62,7 +62,7 @@ public class LoginView extends JFrame {
 		
 		LoginAction lc = new LoginAction();
 		//button.addActionListener(lc.setUsername(loginField.getText()), lc.setPassword(new String(passwordField.toString()))); 
-		
+		button.addActionListener(new LoginAction(loginField.getText(),new String(passwordField.toString())) );
 		 /*button.addActionListener(new ActionListener() {  
             
 
