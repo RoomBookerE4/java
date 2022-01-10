@@ -1,4 +1,4 @@
-package src.controller;
+package controller;
 
 import java.awt.event.ActionEvent;
 
