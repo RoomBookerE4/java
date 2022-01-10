@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import src.view.LoginView;
+
 public class LoginAction extends javax.swing.AbstractAction{
 
 	/**
@@ -13,7 +15,7 @@ public class LoginAction extends javax.swing.AbstractAction{
 	private static final long serialVersionUID = 1L;
 	public static final String NOM_ACTION = "Login";
 	
-	 String username= "test";
+     String  username= "test";
 	 String password = "aa";
 	
 	
@@ -23,7 +25,7 @@ public class LoginAction extends javax.swing.AbstractAction{
 	
 	public LoginAction(String username, String password) {
 		 super(NOM_ACTION);
-		 //this.password = password;
+		 this.password = password;
 		 this.username = username;
 	}
 
@@ -31,7 +33,11 @@ public class LoginAction extends javax.swing.AbstractAction{
 	public void actionPerformed(ActionEvent e) {
 		
 		System.out.print(username);
-		 int reponse = JOptionPane.showConfirmDialog(new JPanel(), this.password ,
+		
+		this.username = LoginView.loginField.getText();
+		this.password =new String(LoginView.passwordField.getPassword());
+		
+		 int reponse = JOptionPane.showConfirmDialog(new JPanel(), username +"  "+ password ,
 		         NOM_ACTION, JOptionPane.YES_NO_OPTION);
 		
 	}
