@@ -17,7 +17,7 @@ import controller.LoginAction;
 
 public class LoginView extends JFrame {
 	
-	public static JTextField loginField;
+	public static JTextField emailField;
 	public static JPasswordField passwordField;
 	
 	public static void main(String[] args) {
@@ -30,9 +30,9 @@ public class LoginView extends JFrame {
 		
 		
 		
-		JLabel loginText = new JLabel("Nom d'utilisateur");  
+		JLabel emailText = new JLabel("Email");  
 		JLabel passwordText = new JLabel("Mot de Passe"); 
-		loginField = new JTextField();
+		emailField = new JTextField();
 		passwordField = new JPasswordField();
        
 		JButton button = new JButton();  
@@ -40,8 +40,8 @@ public class LoginView extends JFrame {
 		
 		label.setBounds(150, 10, 50,10);
 		
-		loginText.setBounds(10, 30, 150, 20);
-		loginField.setBounds(10, 50, 200, 50);
+		emailText.setBounds(10, 30, 150, 20);
+		emailField.setBounds(10, 50, 200, 50);
 		
 		passwordText.setBounds(10,120, 150, 50);
 		passwordField.setBounds(10, 170, 200, 50);
@@ -52,8 +52,8 @@ public class LoginView extends JFrame {
 		button.setText("Login");  
 		
 		frame.add(label);
-		frame.add(loginText);
-		frame.add(loginField);
+		frame.add(emailText);
+		frame.add(emailField);
 		frame.add(button);
 		frame.add(passwordField);
 		frame.add(passwordText);

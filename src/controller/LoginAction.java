@@ -5,7 +5,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import src.view.LoginView;
+import dao.DaoFactory;
+import model.LoginModel;
+import model.UserModel;
+import view.LoginView;
 
 public class LoginAction extends javax.swing.AbstractAction{
 
@@ -15,7 +18,7 @@ public class LoginAction extends javax.swing.AbstractAction{
 	private static final long serialVersionUID = 1L;
 	public static final String NOM_ACTION = "Login";
 	
-     String  username= "test";
+     String  email= "test";
 	 String password = "aa";
 	
 	
@@ -23,31 +26,44 @@ public class LoginAction extends javax.swing.AbstractAction{
 		 super(NOM_ACTION);
 	}
 	
-	public LoginAction(String username, String password) {
+	public LoginAction(String email, String password) {
 		 super(NOM_ACTION);
 		 this.password = password;
-		 this.username = username;
+		 this.email = email;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		System.out.print(username);
 		
-		this.username = LoginView.loginField.getText();
+		this.email = LoginView.emailField.getText();
 		this.password =new String(LoginView.passwordField.getPassword());
 		
-		 int reponse = JOptionPane.showConfirmDialog(new JPanel(), username +"  "+ password ,
-		         NOM_ACTION, JOptionPane.YES_NO_OPTION);
 		
+		 
+		 LoginModel loginModel = new LoginModel(email, password);
+		 
+		 DaoFactory daoFactory = DaoFactory.getInstance();
+		 
+		 UserModel userModel = daoFactory.getLoginDao().verify(loginModel);
+		
+		 if(userModel !=null) {
+			 int reponse = JOptionPane.showConfirmDialog(new JPanel(), "hello"  + email,
+			         NOM_ACTION, JOptionPane.YES_NO_OPTION);
+		 }else {
+			 int reponse = JOptionPane.showConfirmDialog(new JPanel(), "user not found",
+			         NOM_ACTION, JOptionPane.YES_NO_OPTION);
+		 }
 	}
 
-	public String getUsername() {
-		return username;
+	
+
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {

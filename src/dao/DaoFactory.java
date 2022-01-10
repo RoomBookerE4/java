@@ -14,6 +14,8 @@ public class DaoFactory {
         this.username = username;
         this.password = password;
     }
+    
+    
 
     public static DaoFactory getInstance() {
         try {
@@ -41,5 +43,9 @@ public class DaoFactory {
     
     public CoordinateDao getCoordinateDao() {
         return new CoordinateDao(this);
+    }
+    
+    public LoginDao getLoginDao() {
+        return new LoginDao(this);
     }
 }
