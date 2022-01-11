@@ -5,6 +5,9 @@ public class UserModel {
 	public String name, surname, role, email;
 	public int establishment;
 	
+	public UserModel() {
+	}
+	
 	public UserModel(String name, String surname, String role, String email, int establishment) {
 		this.name = name;
 		this.surname = surname;

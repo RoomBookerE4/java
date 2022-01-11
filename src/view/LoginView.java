@@ -3,6 +3,7 @@ package view;
 
 
 import java.awt.Frame;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,26 +18,42 @@ import controller.LoginAction;
 
 public class LoginView extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
+	
 	public static JTextField emailField;
 	public static JPasswordField passwordField;
 	
-	public static void main(String[] args) {
-		Frame frame = new JFrame("login");
-
+	public LoginView() {
+		lauchLogin();
+	}
+	
+	public void lauchLogin() {
 		
-		JPanel panel = new JPanel();
+		JFrame frame = new JFrame("login");
+
+		// TEST
+		MenuOptionView mOption = new MenuOptionView(frame);
+		
 		
 		JLabel label = new JLabel("LOGIN");  
+		
+		((JFrame) frame).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
 		
 		JLabel emailText = new JLabel("Email");  
 		JLabel passwordText = new JLabel("Mot de Passe"); 
+		JButton button = new JButton(); 
+		
+		
 		emailField = new JTextField();
 		passwordField = new JPasswordField();
        
-		JButton button = new JButton();  
-		
 		
 		label.setBounds(150, 10, 50,10);
 		
@@ -51,6 +68,7 @@ public class LoginView extends JFrame {
 		
 		button.setText("Login");  
 		
+		frame.add(mOption, java.awt.BorderLayout.EAST);
 		frame.add(label);
 		frame.add(emailText);
 		frame.add(emailField);
@@ -63,20 +81,11 @@ public class LoginView extends JFrame {
 		frame.setSize(350,350);
 		frame.setVisible(true);
 	
-		//button.addActionListener(lc.setUsername(loginField.getText()), lc.setPassword(new String(passwordField.toString()))); 
-		button.addActionListener(new  LoginAction());
 		
-		/* button.addActionListener(new ActionListener() {  
-            
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String data =  loginField.getText();  
-                
-                label.setText(data);          
-			}  
-          });   */
+		//button.addActionListener(lc.setUsername(loginField.getText()), lc.setPassword(new String(passwordField.toString()))); 
+		button.addActionListener(new  LoginAction(frame));
+		
+		
 		
 		 
 	}

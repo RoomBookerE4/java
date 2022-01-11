@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
@@ -9,6 +10,7 @@ import dao.DaoFactory;
 import model.LoginModel;
 import model.UserModel;
 import view.LoginView;
+import view.MenuView;
 
 public class LoginAction extends javax.swing.AbstractAction{
 
@@ -16,64 +18,47 @@ public class LoginAction extends javax.swing.AbstractAction{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	public static final String NOM_ACTION = "Login";
+	public static boolean looged = false;
 	
-     String  email= "test";
-	 String password = "aa";
+	public Frame frame;
+	public UserModel userModel;
 	
 	
-	public LoginAction() {
+	public LoginAction(Frame frame) {
 		 super(NOM_ACTION);
+		 this.frame = frame;
 	}
 	
-	public LoginAction(String email, String password) {
-		 super(NOM_ACTION);
-		 this.password = password;
-		 this.email = email;
-	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		
-		this.email = LoginView.emailField.getText();
-		this.password =new String(LoginView.passwordField.getPassword());
-		
+		String email = LoginView.emailField.getText();
+		String password =new String(LoginView.passwordField.getPassword());
 		
 		 
 		 LoginModel loginModel = new LoginModel(email, password);
 		 
 		 DaoFactory daoFactory = DaoFactory.getInstance();
 		 
-		 UserModel userModel = daoFactory.getLoginDao().verify(loginModel);
+		  userModel = daoFactory.getLoginDao().verify(loginModel);
 		
 		 if(userModel !=null) {
-			 int reponse = JOptionPane.showConfirmDialog(new JPanel(), "hello"  + email,
-			         NOM_ACTION, JOptionPane.YES_NO_OPTION);
+			 this.looged = true;
+			 frame.dispose();
+			 /*int reponse = JOptionPane.showConfirmDialog(new JPanel(), "hello"  + email,
+			         NOM_ACTION, JOptionPane.YES_NO_OPTION);*/
+			 new MenuView(userModel);
+			 
 		 }else {
-			 int reponse = JOptionPane.showConfirmDialog(new JPanel(), "user not found",
+			 JOptionPane.showConfirmDialog(new JPanel(), "User not found",
 			         NOM_ACTION, JOptionPane.YES_NO_OPTION);
 		 }
 	}
 
-	
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	
 
 }
