@@ -16,4 +16,8 @@ public class CoordinateModel {
 	public int getY() {
 		return this.y;
 	}
+	
+	public String toString() {
+		return "(" + getX() + "," + getY() + ")";
+	}
 }

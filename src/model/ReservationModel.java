@@ -25,4 +25,8 @@ public class ReservationModel {
 	public Date getEndTime() {
 		return this.endTime;
 	}
+	
+	public String toString() {
+		return getRoom().toString() + " booked from " + getStartTime() + " to " + getEndTime();
+	}
 }

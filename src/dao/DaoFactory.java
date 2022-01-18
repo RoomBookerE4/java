@@ -42,4 +42,8 @@ public class DaoFactory {
     public CoordinateDao getCoordinateDao() {
         return new CoordinateDao(this);
     }
+
+    public ReservationDao getReservationDao() {
+        return new ReservationDao(this);
+    }
 }
