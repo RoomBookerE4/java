@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.CoordinateModel;
-import model.EstablishmentModel;
 
 public class CoordinateDao {
 	

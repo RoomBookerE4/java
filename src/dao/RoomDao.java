@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +9,9 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import model.CoordinateModel;
 import model.EstablishmentModel;
@@ -28,7 +32,6 @@ public class RoomDao {
     	//TODO
     }
 	
-    
     /**
      * @return a list of RoomModel containing all the room in the bdd
      */
@@ -266,11 +269,14 @@ public class RoomDao {
         try {
             connection = daoFactory.getConnection();
             statement = connection.createStatement();
-            result = statement.executeQuery("SELECT Room.name AS roomName, idNumber, Room.timeOpen AS roomTimeOpen, Room.timeClose AS roomTimeClose, isBookable, maxTime, "
-											+ "floor, Establishment.timeOpen AS establishmentTimeOpen, Establishment.timeClose AS establishmentTimeClose "
-            								+ "FROM Room, Establishment "
-            								+ "WHERE Room.idEstablishment = Establishment.id "
-            								+ "AND Room.id = " + id + ";");
+            result = statement.executeQuery("SELECT Room.id AS id, Room.name AS roomName, idNumber, Room.timeOpen AS roomTimeOpen, Room.timeClose AS roomTimeClose, isBookable, maxTime, floor, "
+            								+ "Establishment.timeOpen AS establishmentTimeOpen, Establishment.timeClose AS establishmentTimeClose, GROUP_CONCAT(JSON_OBJECT('x',Coordinate.x,'y',Coordinate.y,'line',Coordinate.line)) AS coordinates\n"
+            								+ "FROM Room\n"
+            								+ "INNER JOIN Coordinate\n"
+            								+ "ON Room.id = Coordinate.idRoom\n"
+            								+ "INNER JOIN Establishment\n"
+            								+ "ON Establishment.id = Room.idEstablishment\n"
+            								+ "WHERE Room.id = " + id + ";");
 
             if(result.next()) {
             	String name = result.getString("name");
@@ -280,13 +286,20 @@ public class RoomDao {
                 boolean isBookable = result.getBoolean("isBookable");
                 Time maxTime = result.getTime("maxTime");
                 int floor = result.getInt("floor");
-
-                CoordinateDao coordinateDao = daoFactory.getCoordinateDao();
-                List<CoordinateModel> coordinates = coordinateDao.searchByRoomId(id);
+                String coordinatesString = "["+result.getString("coordinates")+"]";
+                JSONArray coordinatesJson = new JSONArray(coordinatesString);
+                List<CoordinateModel> coordinates = new ArrayList<CoordinateModel>();
                 
-                room = maxTime != null ? 
-            			new RoomModel(name, idNumber, floor, openingTime, closingTime, maxTime, isBookable, coordinates):
-            			new RoomModel(name, idNumber, floor, openingTime, closingTime, isBookable, coordinates);
+                for(int i=0; i<coordinatesJson.length(); i++) {
+                	JSONObject json = new JSONObject(coordinatesJson.get(i));
+                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
+                }
+                //CoordinateDao coordinateDao = daoFactory.getCoordinateDao();
+                //List<CoordinateModel> coordinates = coordinateDao.searchByRoomId(id);
+                System.out.println(coordinates.get(0));
+                //room = maxTime != null ? 
+            	//		new RoomModel(name, idNumber, floor, openingTime, closingTime, maxTime, isBookable, coordinates):
+            	//		new RoomModel(name, idNumber, floor, openingTime, closingTime, isBookable, coordinates);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -297,12 +310,10 @@ public class RoomDao {
     public static void main(String[] args) {
     	DaoFactory daoFactory = DaoFactory.getInstance();
     	RoomDao roomDao = daoFactory.getRoomDao();
-    	
-    	EstablishmentModel establishment = new EstablishmentModel("ESEO Angers", "07:00:00", "18:00:00");
-    	
-    	List<RoomModel> rooms = roomDao.searchByFloor(establishment, 1);
-    	for(RoomModel room : rooms) {
-    		System.out.println(room.toString());
-    	}
+    	    	
+    	RoomModel room = roomDao.searchById(2);
+    	//for(RoomModel room : rooms) {
+    	//	System.out.println(room.toString());
+    	//}
     }
 }
