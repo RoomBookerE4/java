@@ -116,6 +116,7 @@ public class CoordinateView {
            repaint();
         }
 
+        
         @Override
         public Dimension getPreferredSize() {
             return new Dimension(PANEL_WIDTH, PANEL_HEIGHT);
@@ -222,8 +223,6 @@ public class CoordinateView {
     protected static void initUI() {
     	
         JFrame frame = new JFrame("test");
-        
-        
         
         frame.add(new Drawing());
         

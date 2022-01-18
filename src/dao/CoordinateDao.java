@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,7 +29,7 @@ public class CoordinateDao {
             connection = daoFactory.getConnection();
             statement = connection.createStatement();
             result = statement.executeQuery("SELECT x, y "
-										+ "FROM Coordinates "
+										+ "FROM Coordinate "
 										+ "WHERE idRoom = " + roomId + ";");
             
             while (result.next()) {
@@ -43,5 +44,33 @@ public class CoordinateDao {
             e.printStackTrace();
         }
         return coordinates;
+    }
+    
+    public void addCoordinates(List<CoordinateModel> coordinateModels) {
+    	 Connection connection = null;
+         PreparedStatement preparedStatement = null;
+    	
+         try {
+        		 String SQL = "INSERT INTO Coordinate(x,y, idRoom, order) "
+                         + "VALUES(?,?, ?,?)";
+        		 connection = daoFactory.getConnection();
+                  preparedStatement = connection.prepareStatement(SQL) ;
+             int count = 0;
+
+             for (CoordinateModel cm : coordinateModels) {
+            	 preparedStatement.setInt(1, cm.x);
+            	 preparedStatement.setInt(2, cm.y);
+
+            	 preparedStatement.addBatch();
+                 count++;
+                 // execute every 100 rows or less
+                 if (count % 50 == 0 || count == coordinateModels.size()) {
+                	 preparedStatement.executeBatch();
+                 }
+             }
+         } catch (SQLException ex) {
+             System.out.println(ex.getMessage());
+         }
+        
     }
 }
