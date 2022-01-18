@@ -14,6 +14,8 @@ public class DaoFactory {
         this.username = username;
         this.password = password;
     }
+    
+    
 
     public static DaoFactory getInstance() {
         try {
@@ -45,5 +47,9 @@ public class DaoFactory {
 
     public ReservationDao getReservationDao() {
         return new ReservationDao(this);
+    }
+    
+    public LoginDao getLoginDao() {
+        return new LoginDao(this);
     }
 }

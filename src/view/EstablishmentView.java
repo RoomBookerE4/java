@@ -1,5 +1,10 @@
 package view;
 
-public class EstablishmentView {
+import javax.swing.JFrame;
+
+public class EstablishmentView extends JFrame{
+	
+	 
+	
 
 }
