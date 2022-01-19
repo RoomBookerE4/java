@@ -2,12 +2,21 @@ package view;
 
 import java.awt.Color;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import model.UserModel;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class MenuView extends JFrame{
 	
@@ -26,22 +35,42 @@ public class MenuView extends JFrame{
 	public void lauchMenu(){
 
 		JFrame frame = new JFrame("Main menu");
-		MenuOptionView mOption = new MenuOptionView(frame);
 		
 		
 		((JFrame) frame).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		//mOption.setBackground(Color.BLACK);
-		JLabel label = new JLabel("CARTE DES SALLES");  
-		label.setBounds(200, 600, 50, 50);
-	
-		frame.add(label);
-		frame.add(mOption, java.awt.BorderLayout.EAST);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{767, 127, 0};
+		gridBagLayout.rowHeights = new int[]{400};
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0};
+		frame.getContentPane().setLayout(gridBagLayout);
 		
 		frame.setLocationRelativeTo(null);
-		frame.setSize(700,700);
+		frame.setSize(986,660);
 		frame.setVisible(true);
-	
+				
+		MenuOptionView mOption = new MenuOptionView(frame);
+		GridBagConstraints gbc_mOption = new GridBagConstraints();
+		gbc_mOption.anchor = GridBagConstraints.WEST;
+		gbc_mOption.gridx = 1;
+		gbc_mOption.gridy = 0;
+		frame.getContentPane().add(mOption, gbc_mOption);
+		
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
+		} catch(IOException e) {
+            e.printStackTrace();
+		}
+		Image dimg = myPicture.getScaledInstance(frame.getWidth()-mOption.getWidth(), frame.getContentPane().getHeight(),
+		        Image.SCALE_SMOOTH);
+		JLabel picLabel = new JLabel(new ImageIcon(dimg));
+		GridBagConstraints gbc_picLbl = new GridBagConstraints();
+		gbc_picLbl.insets = new Insets(0, 0, 0, 5);
+		gbc_picLbl.gridx = 0;
+		gbc_picLbl.gridy = 0;
+		frame.getContentPane().add(picLabel, gbc_picLbl);
+
 	}
 
 }
