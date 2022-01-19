@@ -5,6 +5,7 @@ public class CoordinateModel {
 	public int x, y, order;
 	
 	public String name;
+	// int idSalle
 	
 	public CoordinateModel(int x, int y) {
 		this.x = x;

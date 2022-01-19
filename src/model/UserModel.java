@@ -3,12 +3,12 @@ package model;
 public class UserModel {
 
 	public String name, surname, role, email;
-	public int establishment;
+	public Integer establishment;
 	
 	public UserModel() {
 	}
 	
-	public UserModel(String name, String surname, String role, String email, int establishment) {
+	public UserModel(String name, String surname, String role, String email, Integer establishment) {
 		this.name = name;
 		this.surname = surname;
 		this.role = role;
@@ -38,11 +38,11 @@ public class UserModel {
 
 	
 
-	public int getEstablishment() {
+	public Integer getEstablishment() {
 		return establishment;
 	}
 
-	public void setEstablishment(int establishment) {
+	public void setEstablishment(Integer establishment) {
 		this.establishment = establishment;
 	}
 

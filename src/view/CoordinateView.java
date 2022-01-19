@@ -10,11 +10,17 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -24,8 +30,8 @@ import model.CoordinateModel;
 
 public class CoordinateView {
 	
-	private static final int PANEL_WIDTH = 600;
-    private static final int PANEL_HEIGHT = 600;
+	private static final int PANEL_WIDTH = 700;
+    private static final int PANEL_HEIGHT = 700;
     
     public static class Drawing extends JPanel {
 
@@ -56,7 +62,7 @@ public class CoordinateView {
 
         };
 
-        public Drawing() {
+        public Drawing() throws IOException {
             addMouseListener(mouseListener);
             JButton button = new JButton("Insert database"); 
             
@@ -87,11 +93,14 @@ public class CoordinateView {
     				
     			}  
             });  
-            
-            
+            //BufferedImage myPicture = ImageIO.read(new File("\\Desktop\\ETAGE1.png"));
+            JLabel picLabel = new JLabel(new ImageIcon("/Users/zaramarks/Desktop/ETAGE2.png"));
+            //picLabel.setBounds(100, 100, 200, 200);
+            this.add(picLabel);
             this.add(button);
             this.add(text);
             this.add(button2);
+           
         }
 
         protected void addPoint(int x, int y) {
@@ -220,7 +229,7 @@ public class CoordinateView {
     }
     }
 
-    protected static void initUI() {
+    protected static void initUI() throws IOException {
     	
         JFrame frame = new JFrame("test");
         
@@ -235,7 +244,12 @@ public class CoordinateView {
 
             @Override
             public void run() {
-                initUI();
+                try {
+					initUI();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
     }

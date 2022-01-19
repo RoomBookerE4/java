@@ -17,7 +17,8 @@ public class MainApp {
 		//pass: zara123
 		
 		//LANCER SANS LE LOGIN
-		new MenuView(new UserModel());
+		//String name, String surname, String role, String email, Integer establishment
+		new MenuView(new UserModel("zara ","marks", "administrator", "zara@gmail.com", 1));
 	}
 	
 	 public static void main(String[] args){
