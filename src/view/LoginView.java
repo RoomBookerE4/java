@@ -1,8 +1,9 @@
-package src.view;
+package view;
 
 
 
 import java.awt.Frame;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,32 +14,50 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import src.controller.LoginAction;
+import controller.action.LoginAction;
 
 public class LoginView extends JFrame {
 	
-	public static void main(String[] args) {
-		Frame frame = new JFrame("login");
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
+	
+	public static JTextField emailField;
+	public static JPasswordField passwordField;
+	
+	public LoginView() {
+		lauchLogin();
+	}
+	
+	public void lauchLogin() {
 		
-		JPanel panel = new JPanel();
+		
+
+		// TEST
+		
 		
 		JLabel label = new JLabel("LOGIN");  
 		
+		((JFrame) this).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
-		JLabel loginText = new JLabel("Nom d'utilisateur");  
+		
+		JLabel emailText = new JLabel("Email");  
 		JLabel passwordText = new JLabel("Mot de Passe"); 
-		JTextField loginField = new JTextField();
-		JPasswordField passwordField = new JPasswordField();
-       
-		JButton button = new JButton();  
+		JButton button = new JButton(); 
 		
+		
+		emailField = new JTextField();
+		passwordField = new JPasswordField();
+       
 		
 		label.setBounds(150, 10, 50,10);
 		
-		loginText.setBounds(10, 30, 150, 20);
-		loginField.setBounds(10, 50, 200, 50);
+		emailText.setBounds(10, 30, 150, 20);
+		emailField.setBounds(10, 50, 200, 50);
 		
 		passwordText.setBounds(10,120, 150, 50);
 		passwordField.setBounds(10, 170, 200, 50);
@@ -48,35 +67,27 @@ public class LoginView extends JFrame {
 		
 		button.setText("Login");  
 		
-		frame.add(label);
-		frame.add(loginText);
-		frame.add(loginField);
-		frame.add(button);
-		frame.add(passwordField);
-		frame.add(passwordText);
+		this.add(label);
+		this.add(emailText);
+		this.add(emailField);
+		this.add(button);
+		this.add(passwordField);
+		this.add(passwordText);
 		//frame.add(panel);
 		
-		frame.setLayout(null);
-		frame.setSize(350,350);
-		frame.setVisible(true);
+		this.setLayout(null);
+		this.setSize(350,350);
+		this.setVisible(true);
+	
 		
-		LoginAction lc = new LoginAction();
 		//button.addActionListener(lc.setUsername(loginField.getText()), lc.setPassword(new String(passwordField.toString()))); 
+		button.addActionListener(new  LoginAction(this));
 		
-		 /*button.addActionListener(new ActionListener() {  
-            
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String data =  loginField.getText();  
-                
-                label.setText(data);          
-			}  
-          });   */
+		
 		
 		 
 	}
+
 	
 	
 }

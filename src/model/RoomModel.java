@@ -1,11 +1,12 @@
-package src.model;
+package model;
 
 import java.lang.String;
 import java.sql.Time;
+import java.util.List;
 
 public class RoomModel {
 	
-	public static final Time DEFAULT_MAX_BOOKING_TIME = new Time(2*3600);
+	public static final Time DEFAULT_MAX_BOOKING_TIME = new Time(2*3600*1000);
 	
 	public String name, number;
 	
@@ -15,11 +16,11 @@ public class RoomModel {
 	
 	public boolean isBookable;
 	
-	public CoordinateModel[] coordinates;
+	public List<CoordinateModel> coordinates;
 	
 	public RoomModel(String name, String number, int floor, 
 					Time openingTime, Time closingTime, Time maxBookingTime,
-					boolean isBookable, CoordinateModel[] coordinates) {
+					boolean isBookable, List<CoordinateModel> coordinates) {
 		this.name = name;
 		this.number = number;
 		this.floor = floor;
@@ -32,9 +33,25 @@ public class RoomModel {
 	
 	public RoomModel(String name, String number, int floor, 
 					Time openingTime, Time closingTime,
-					boolean isBookable, CoordinateModel[] coordinates) {
+					boolean isBookable, List<CoordinateModel> coordinates) {
 		this(name, number, floor, openingTime, 
 			closingTime, DEFAULT_MAX_BOOKING_TIME, 
+			isBookable, coordinates);
+	}
+	
+	public RoomModel(String name, String number, int floor, 
+			String openingTime, String closingTime, String maxBookingTime,
+			boolean isBookable, List<CoordinateModel> coordinates) {
+		this(name, number, floor, Time.valueOf(openingTime), 
+			Time.valueOf(closingTime), Time.valueOf(closingTime), 
+			isBookable, coordinates);
+	}
+	
+	public RoomModel(String name, String number, int floor, 
+			String openingTime, String closingTime,
+			boolean isBookable, List<CoordinateModel> coordinates) {
+		this(name, number, floor, Time.valueOf(openingTime), 
+			Time.valueOf(closingTime), DEFAULT_MAX_BOOKING_TIME, 
 			isBookable, coordinates);
 	}
 	
@@ -62,8 +79,13 @@ public class RoomModel {
 		return this.maxBookingTime;
 	}
 	
-	public CoordinateModel[] getCoordinates() {
+	public List<CoordinateModel> getCoordinates() {
 		return this.coordinates;
 	}
 	
+	public String toString() {
+		return "Room " + getName() + " (" + getNumber() + ") floor " + getFloor() 
+				+ (this.isBookable? "," : ", not") + " bookable from " + getOpeningTime()
+				+ " to " + getClosingTime() + " for a max time of " + getMaxBookingTime(); 
+	}
 }
