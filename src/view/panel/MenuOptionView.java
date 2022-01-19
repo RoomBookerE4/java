@@ -7,6 +7,9 @@ import java.sql.Date;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +27,8 @@ import type.UserRole;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
+
+
 
 public class MenuOptionView extends JPanel implements ActionListener{
 
@@ -49,6 +54,7 @@ public class MenuOptionView extends JPanel implements ActionListener{
 		
 		JLabel label = new JLabel("panel");  
 		String floors[]={"Floor 0 ","Floor 2","Floor 3","Floor 4"};        
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {39, 49, 87, 30};
 		gridBagLayout.rowHeights = new int[]{27, 0, 0, 0, 0, 0, 0};
