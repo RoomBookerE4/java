@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import controller.LoginAction;
+import controller.action.LoginAction;
 
 public class LoginView extends JFrame {
 	
@@ -34,15 +34,14 @@ public class LoginView extends JFrame {
 	
 	public void lauchLogin() {
 		
-		JFrame frame = new JFrame("login");
+		
 
 		// TEST
-		MenuOptionView mOption = new MenuOptionView(frame);
 		
 		
 		JLabel label = new JLabel("LOGIN");  
 		
-		((JFrame) frame).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		((JFrame) this).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
 		
@@ -68,22 +67,21 @@ public class LoginView extends JFrame {
 		
 		button.setText("Login");  
 		
-		frame.add(mOption, java.awt.BorderLayout.EAST);
-		frame.add(label);
-		frame.add(emailText);
-		frame.add(emailField);
-		frame.add(button);
-		frame.add(passwordField);
-		frame.add(passwordText);
+		this.add(label);
+		this.add(emailText);
+		this.add(emailField);
+		this.add(button);
+		this.add(passwordField);
+		this.add(passwordText);
 		//frame.add(panel);
 		
-		frame.setLayout(null);
-		frame.setSize(350,350);
-		frame.setVisible(true);
+		this.setLayout(null);
+		this.setSize(350,350);
+		this.setVisible(true);
 	
 		
 		//button.addActionListener(lc.setUsername(loginField.getText()), lc.setPassword(new String(passwordField.toString()))); 
-		button.addActionListener(new  LoginAction(frame));
+		button.addActionListener(new  LoginAction(this));
 		
 		
 		

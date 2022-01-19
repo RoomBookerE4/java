@@ -1,23 +1,21 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import model.UserModel;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import java.io.File;
 import java.io.IOException;
+
+import model.UserModel;
 
 public class MenuView extends JFrame{
 	
@@ -36,7 +34,6 @@ public class MenuView extends JFrame{
 	public void lauchMenu(){
 
 		JFrame frame = new JFrame("Main menu");
-		
 		
 		((JFrame) frame).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
