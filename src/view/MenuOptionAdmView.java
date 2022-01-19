@@ -1,4 +1,4 @@
-package view.panel;
+package view;
 
 
 import java.awt.event.ActionEvent;
@@ -7,9 +7,6 @@ import java.sql.Date;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,19 +16,11 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import com.toedter.calendar.JDateChooser;
 
-import controller.action.AdminAction;
-import controller.action.LoginAction;
-import model.UserModel;
-import type.AdminOption;
-import type.UserRole;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 
-
-
-public class MenuOptionView extends JPanel implements ActionListener{
-
+public class MenuOptionAdmView extends JPanel implements ActionListener{
 
 	/**
 	 * MENU D'OPTIONS 
@@ -39,12 +28,11 @@ public class MenuOptionView extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	
 	public JFrame frame;
-
-	public UserModel user;
-	
-	public MenuOptionView(JFrame frame,UserModel user ){
+		
+	public MenuOptionAdmView(JFrame frame){
+		//super();
 		this.frame = frame;
-		this.user = user;
+		initComponents();
 	}
 
 	
@@ -54,27 +42,17 @@ public class MenuOptionView extends JPanel implements ActionListener{
 		
 		JLabel label = new JLabel("panel");  
 		String floors[]={"Floor 0 ","Floor 2","Floor 3","Floor 4"};        
-		
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] {39, 49, 87, 30};
-		gridBagLayout.rowHeights = new int[]{27, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] {30, 49, 87, 30};
+		gridBagLayout.rowHeights = new int[]{16, 27, 0, 0, 0, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		JButton admButton = new JButton("Adm");
-		
-		
-		if(user.getRole().equals(UserRole.ADM)) {
-			this.add(admButton);
-		}
-		
-		
-		this.add(new JLabel("Étage"));
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, 0, 5, 5);
 		gbc.gridx = 1;
-		gbc.gridy = 0;
+		gbc.gridy = 1;
 		JLabel label_1 = new JLabel("Étage");
 		this.add(label_1, gbc);
 		JComboBox comboBox = new JComboBox(floors);
@@ -86,7 +64,7 @@ public class MenuOptionView extends JPanel implements ActionListener{
 		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox.anchor = GridBagConstraints.NORTH;
 		gbc_comboBox.gridx = 2;
-		gbc_comboBox.gridy = 0;
+		gbc_comboBox.gridy = 1;
 		this.add(comboBox, gbc_comboBox);
 		
 		JDateChooser dateChooser = new JDateChooser();
@@ -98,7 +76,7 @@ public class MenuOptionView extends JPanel implements ActionListener{
 		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
 		gbc_dateChooser.fill = GridBagConstraints.BOTH;
 		gbc_dateChooser.gridx = 1;
-		gbc_dateChooser.gridy = 1;
+		gbc_dateChooser.gridy = 2;
 		add(dateChooser, gbc_dateChooser);
 		
 		JButton btnNewButton = new JButton("Valider");
@@ -108,7 +86,7 @@ public class MenuOptionView extends JPanel implements ActionListener{
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 2;
+		gbc_lblNewLabel.gridy = 3;
 		add(lblNewLabel, gbc_lblNewLabel);
 		
 		Format timeFormat = new SimpleDateFormat("HH:mm");
@@ -119,19 +97,17 @@ public class MenuOptionView extends JPanel implements ActionListener{
 		gbc_formattedTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_formattedTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_formattedTextField.gridx = 2;
-		gbc_formattedTextField.gridy = 2;
+		gbc_formattedTextField.gridy = 3;
 		add(formattedTextField, gbc_formattedTextField);
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.gridwidth = 2;
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 3;
+		gbc_btnNewButton.gridy = 4;
 		add(btnNewButton, gbc_btnNewButton);
 		
 		//this.add(new JLabel("Test"));
 		//this.setLayout(new GridLayout(20, 2));
-		
-		admButton.addActionListener(new  AdminAction(frame, this, user, AdminOption.oAdm));
 		
 		
 	}

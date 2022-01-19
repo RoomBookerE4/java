@@ -1,28 +1,36 @@
 package model;
 
-import java.sql.Date;
-
 public class ReservationModel {
 	
 	public RoomModel room;
 	
-	public Date startTime, endTime;
-	
-	public ReservationModel(RoomModel room, Date startTime, Date endTime) {
+	public DateTime startTime, endTime;
+		
+	public ReservationModel(RoomModel room, DateTime startTime, DateTime endTime) {
 		this.room = room;
 		this.startTime = startTime;
 		this.endTime = endTime;
+	}
+	
+	public ReservationModel(RoomModel room, String startTime, String endTime) {
+		this.room = room;
+		this.startTime = DateTime.valueOf(startTime);
+		this.endTime = DateTime.valueOf(endTime);
 	}
 	
 	public RoomModel getRoom() {
 		return this.room;
 	}
 	
-	public Date getStartTime() {
+	public DateTime getStartTime() {
 		return this.startTime;
 	}
 	
-	public Date getEndTime() {
+	public DateTime getEndTime() {
 		return this.endTime;
+	}
+	
+	public String toString() {
+		return getRoom().toString() + " booked from " + getStartTime() + " to " + getEndTime();
 	}
 }

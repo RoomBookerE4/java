@@ -21,7 +21,7 @@ public class RoomModel {
 	public RoomModel(String name, String number, int floor, 
 					Time openingTime, Time closingTime, Time maxBookingTime,
 					boolean isBookable, List<CoordinateModel> coordinates) {
-		if(name != null) this.name = name;
+		this.name = name;
 		this.number = number;
 		this.floor = floor;
 		this.openingTime = openingTime;
@@ -83,4 +83,9 @@ public class RoomModel {
 		return this.coordinates;
 	}
 	
+	public String toString() {
+		return "Room " + getName() + " (" + getNumber() + ") floor " + getFloor() 
+				+ (this.isBookable? "," : ", not") + " bookable from " + getOpeningTime()
+				+ " to " + getClosingTime() + " for a max time of " + getMaxBookingTime(); 
+	}
 }

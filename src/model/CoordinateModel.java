@@ -37,7 +37,6 @@ public class CoordinateModel {
 		return this.y;
 	}
 
-
 	public int getOrder() {
 		return order;
 	}
@@ -68,4 +67,7 @@ public class CoordinateModel {
 	}
 	
 	
+	public String toString() {
+		return "(" + getX() + "," + getY() + ")";
+	}
 }
