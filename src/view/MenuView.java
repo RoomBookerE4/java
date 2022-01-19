@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 import model.UserModel;
+import view.panel.MenuOptionView;
 
 public class MenuView extends JFrame{
 	
@@ -47,7 +48,7 @@ public class MenuView extends JFrame{
 		frame.setSize(500,250);
 		frame.setVisible(true);
 				
-		MenuOptionView mOption = new MenuOptionView(frame);
+		MenuOptionView mOption = new MenuOptionView(frame, user);
 		GridBagConstraints gbc_mOption = new GridBagConstraints();
 		gbc_mOption.anchor = GridBagConstraints.WEST;
 		gbc_mOption.gridx = 1;
@@ -56,7 +57,12 @@ public class MenuView extends JFrame{
 		
 		BufferedImage myPicture = null;
 		try {
-			myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
+			
+			//marcelin
+			//myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
+			
+			//zara
+			myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
 		} catch(IOException e) {
             e.printStackTrace();
 		}
