@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
 
 import model.UserModel;
 import view.panel.MenuOptionView;
@@ -35,7 +37,7 @@ public class MenuView extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 
-	public UserModel user;
+	public  UserModel user;
 	
 	public MenuView(UserModel user){
 		this.user = user;
@@ -66,15 +68,22 @@ public class MenuView extends JFrame{
 		frame.getContentPane().add(mOption, gbc_mOption);
 		
 		BufferedImage myPicture = null;
+		//zara
+		/*ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		InputStream input = classLoader.getResourceAsStream("/source/etage.png");
+
 		try {
-			
-			//marcelin
-			//myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
-			
-			//zara
-			myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
-		} catch(IOException e) {
-            e.printStackTrace();
+			myPicture = ImageIO.read(input);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}*/
+		try {
+			myPicture = ImageIO.read(new File("/Users/zaramarks/etage.png"));
+			System.out.println(Paths.get("").toAbsolutePath().toString());
+			//myPicture = ImageIO.read(new File("../../../eclipse-workspace/ProjetInfraJava/images/etage.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		Image dimg = myPicture.getScaledInstance(myPicture.getWidth()/2, myPicture.getHeight()/2,
 		        Image.SCALE_SMOOTH);

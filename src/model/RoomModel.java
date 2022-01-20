@@ -10,11 +10,13 @@ public class RoomModel {
 	
 	public String name, number;
 	
-	public int floor;
+	public int floor, establishment_id;
 	
 	public Time openingTime, closingTime, maxBookingTime;
 	
 	public boolean isBookable;
+	
+
 	
 	public List<CoordinateModel> coordinates;
 	
@@ -29,6 +31,18 @@ public class RoomModel {
 		this.maxBookingTime = maxBookingTime;
 		this.isBookable = isBookable;
 		this.coordinates = coordinates;
+	}
+	
+	public RoomModel(String name, String number, int floor, 
+			Time openingTime, Time closingTime, Time maxBookingTime,
+			boolean isBookable) {
+			this.name = name;
+			this.number = number;
+			this.floor = floor;
+			this.openingTime = openingTime;
+			this.closingTime = closingTime;
+			this.maxBookingTime = maxBookingTime;
+			this.isBookable = isBookable;
 	}
 	
 	public RoomModel(String name, String number, int floor, 
@@ -55,6 +69,23 @@ public class RoomModel {
 			isBookable, coordinates);
 	}
 	
+	
+	
+	public RoomModel(String name, String number, int floor, Time openingTime, Time closingTime,
+			Time maxBookingTime, boolean isBookable,  int establishment_id) {
+		this.name = name;
+		this.number = number;
+		this.floor = floor;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
+		this.maxBookingTime = maxBookingTime;
+		this.isBookable = isBookable;
+		this.establishment_id = establishment_id;
+	}
+	
+
+
+
 	public String getName() {
 		return this.name;
 	}
