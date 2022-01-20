@@ -1,2 +1,10 @@
+<<<<<<< HEAD
 /view/
 /dao/
+=======
+/controller/
+/dao/
+/model/
+/view/
+>>>>>>> branch 'marcelin' of git@github.com:RoomBookerE4/java.git
+/type/

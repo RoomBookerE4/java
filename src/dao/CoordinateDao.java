@@ -62,7 +62,6 @@ public class CoordinateDao {
             	 preparedStatement.setInt(2, cm.y);
             	 preparedStatement.setString(3, room.getNumber());
             	 preparedStatement.setInt(4, cm.getOrder());
-
             	 preparedStatement.addBatch();
                  count++;
                  // execute every 100 rows or less

@@ -289,7 +289,6 @@ public class CoordinateView {
 
 		frame.setMinimumSize(dim);
         frame.setMaximumSize(dim);
-        
         frame.pack();
         frame.setVisible(true);
     }

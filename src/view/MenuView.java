@@ -68,7 +68,6 @@ public class MenuView extends JFrame{
 		frame.setSize(frameDim);
 		frame.setMinimumSize(frameDim);
 		frame.setMaximumSize(frameDim);
-
 	}
 
 }
