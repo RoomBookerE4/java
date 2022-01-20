@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import model.UserModel;
 import view.panel.MenuOptionView;
+import java.awt.FlowLayout;
 
 public class MenuView extends JFrame{
 	
@@ -37,49 +38,36 @@ public class MenuView extends JFrame{
 		JFrame frame = new JFrame("Main menu");
 		
 		((JFrame) frame).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{767, 127, 0};
-		gridBagLayout.rowHeights = new int[]{400};
-		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0};
-		frame.getContentPane().setLayout(gridBagLayout);
 		
 		frame.setLocationRelativeTo(null);
 		frame.setSize(500,250);
 		frame.setVisible(true);
-				
-		MenuOptionView mOption = new MenuOptionView(frame, user);
-		GridBagConstraints gbc_mOption = new GridBagConstraints();
-		gbc_mOption.anchor = GridBagConstraints.WEST;
-		gbc_mOption.gridx = 1;
-		gbc_mOption.gridy = 0;
-		frame.getContentPane().add(mOption, gbc_mOption);
+		frame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		BufferedImage myPicture = null;
 		try {
 			
 			//marcelin
-			//myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
+			myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
 			
 			//zara
-			myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
+			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
 		} catch(IOException e) {
             e.printStackTrace();
 		}
 		Image dimg = myPicture.getScaledInstance(myPicture.getWidth()/2, myPicture.getHeight()/2,
 		        Image.SCALE_SMOOTH);
 		JLabel picLabel = new JLabel(new ImageIcon(dimg));
-		GridBagConstraints gbc_picLbl = new GridBagConstraints();
-		gbc_picLbl.insets = new Insets(0, 0, 0, 5);
-		gbc_picLbl.gridx = 0;
-		gbc_picLbl.gridy = 0;
-		frame.getContentPane().add(picLabel, gbc_picLbl);
+		frame.getContentPane().add(picLabel);
+		
+		MenuOptionView mOption = new MenuOptionView(frame, user);
+		frame.getContentPane().add(mOption);
 		
 		
-		Dimension frameDim = new Dimension((int)picLabel.getMaximumSize().getWidth() + (int)mOption.getMinimumSize().getWidth(), (int)picLabel.getMaximumSize().getHeight()+26);
+		Dimension frameDim = new Dimension((int)picLabel.getMaximumSize().getWidth() + (int)mOption.getMinimumSize().getWidth()+20, (int)picLabel.getMaximumSize().getHeight()+26);
 		frame.setSize(frameDim);
 		frame.setMinimumSize(frameDim);
-		//frame.setMaximumSize(frameDim);
+		frame.setMaximumSize(frameDim);
 
 	}
 

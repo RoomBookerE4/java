@@ -6,6 +6,8 @@ import java.util.List;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +28,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import model.CoordinateModel;
+import java.awt.BorderLayout;
+import javax.swing.SwingConstants;
 
 
 public class CoordinateView {
@@ -67,7 +71,7 @@ public class CoordinateView {
             JButton button = new JButton("Insert database"); 
             
             
-            button.setBounds(50, 50, 50, 50);
+            button.setBounds(230, 550, 150, 30);
             button.addActionListener((ActionListener) new ActionListener(){  
            
     			@Override
@@ -75,15 +79,13 @@ public class CoordinateView {
     				addAll();
     				
     			}  
-            });  
+            });
             
-             text = new JTextField("room name");
-            
+            text = new JTextField("room identifiant");
             
             JButton button2 = new JButton("Create"); 
             
-            
-           // button2.setBounds(150, 50, 50, 50);
+            button2.setBounds(530, 550, 150, 30);
             button2.addActionListener((ActionListener) new ActionListener(){  
            
     			@Override
@@ -92,14 +94,28 @@ public class CoordinateView {
     				
     				
     			}  
-            });  
-            //BufferedImage myPicture = ImageIO.read(new File("\\Desktop\\ETAGE1.png"));
-            JLabel picLabel = new JLabel(new ImageIcon("/Users/zaramarks/Desktop/ETAGE2.png"));
+            });
+            
+    		/**BufferedImage myPicture = null;
+    		try {
+    			
+    			//marcelin
+    			myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
+    			
+    			//zara
+    			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
+    		} catch(IOException e) {
+                e.printStackTrace();
+    		}
+    		Image dimg = myPicture.getScaledInstance(myPicture.getWidth()/2, myPicture.getHeight()/2,
+    		        Image.SCALE_SMOOTH);
+    		JLabel picLabel = new JLabel(new ImageIcon(dimg));
             //picLabel.setBounds(100, 100, 200, 200);
-            this.add(picLabel);
+            this.add(picLabel);*/
             this.add(button);
             this.add(text);
             this.add(button2);
+            //this.setMinimumSize(new Dimension(myPicture.getWidth()/2 + 14, myPicture.getHeight()/2));
            
         }
 
@@ -139,6 +155,24 @@ public class CoordinateView {
            /* for (Polygon polygon : polygons) {
                 drawPolygon(g, polygon);
             }*/
+            
+            BufferedImage myPicture = null;
+    		try {
+    			
+    			//marcelin
+    			myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
+    			
+    			//zara
+    			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
+    		} catch(IOException e) {
+                e.printStackTrace();
+    		}
+    		Image dimg = myPicture.getScaledInstance(myPicture.getWidth()/2, myPicture.getHeight()/2,
+    		        Image.SCALE_SMOOTH);
+            
+            if (dimg != null) {
+                g.drawImage(dimg, 7, 0, this);
+            }
             
             polygonRoom.forEach((k, p) -> {
             	drawPolygon(g, p);
@@ -232,8 +266,29 @@ public class CoordinateView {
     protected static void initUI() throws IOException {
     	
         JFrame frame = new JFrame("test");
-        
-        frame.add(new Drawing());
+		((JFrame) frame).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Drawing drawing = new Drawing();
+		drawing.text.setHorizontalAlignment(SwingConstants.CENTER);
+		drawing.text.setBounds(380, 550, 150, 30);
+        frame.getContentPane().add(drawing, BorderLayout.NORTH);
+        drawing.setLayout(null);
+
+        BufferedImage myPicture = null;
+		try {
+			
+			//marcelin
+			myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
+			
+			//zara
+			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
+		} catch(IOException e) {
+            e.printStackTrace();
+		}
+        Dimension dim = new Dimension(myPicture.getWidth()/2 + 14, myPicture.getHeight()/2+100);
+
+		frame.setMinimumSize(dim);
+        frame.setMaximumSize(dim);
         
         frame.pack();
         frame.setVisible(true);

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.CoordinateModel;
+import model.RoomModel;
 
 public class CoordinateDao {
 	
@@ -45,13 +46,13 @@ public class CoordinateDao {
         return coordinates;
     }
     
-    public void addCoordinates(List<CoordinateModel> coordinateModels) {
+    public void addCoordinates(List<CoordinateModel> coordinateModels, RoomModel room) {
     	 Connection connection = null;
          PreparedStatement preparedStatement = null;
     	
          try {
         		 String SQL = "INSERT INTO Coordinate(x,y, idRoom, order) "
-                         + "VALUES(?,?, ?,?)";
+                         + "VALUES(?,?,(SELECT id FROM Room WHERE Room.idNumber = ?),?)";
         		 connection = daoFactory.getConnection();
                   preparedStatement = connection.prepareStatement(SQL) ;
              int count = 0;
@@ -59,6 +60,8 @@ public class CoordinateDao {
              for (CoordinateModel cm : coordinateModels) {
             	 preparedStatement.setInt(1, cm.x);
             	 preparedStatement.setInt(2, cm.y);
+            	 preparedStatement.setString(3, room.getNumber());
+            	 preparedStatement.setInt(4, cm.getOrder());
 
             	 preparedStatement.addBatch();
                  count++;

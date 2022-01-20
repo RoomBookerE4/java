@@ -46,7 +46,7 @@ public class RoomDao {
             preparedStatement.setString(6, room.getMaxBookingTime().toString());
             preparedStatement.setString(7, establishment.getName().toString());
             
-            this.daoFactory.getCoordinateDao().addCoordinates(room.getCoordinates());
+            this.daoFactory.getCoordinateDao().addCoordinates(room.getCoordinates(), room);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
