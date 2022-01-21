@@ -10,11 +10,13 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import model.CoordinateModel;
+import model.DateTime;
 import model.EstablishmentModel;
 import model.RoomModel;
 
@@ -73,7 +75,7 @@ public class RoomDao {
 											+ "INNER JOIN Coordinate\n"
 											+ "ON Room.id = Coordinate.idRoom\n"
 											+ "INNER JOIN Establishment\n"
-											+ "ON Establishment.id = Room.idEstablishment;");
+											+ "ON Establishment.id = Room.idEstablishment GROUP BY 1;");
 
             if(result.first() && result.getString("idNumber") == null)
             	return rooms;
@@ -131,7 +133,7 @@ public class RoomDao {
 											+ "ON Room.id = Coordinate.idRoom\n"
 											+ "INNER JOIN Establishment\n"
 											+ "ON Establishment.id = Room.idEstablishment\n"
-											+ "WHERE Room.name = '" + name + "';");
+											+ "WHERE Room.name = '" + name + "' GROUP BY 1;");
 
             if(result.first() && result.getString("idNumber") == null)
             	return rooms;
@@ -188,7 +190,7 @@ public class RoomDao {
 											+ "ON Room.id = Coordinate.idRoom\n"
 											+ "INNER JOIN Establishment\n"
 											+ "ON Establishment.id = Room.idEstablishment\n"
-											+ "WHERE Room.idNumber = '" + number + "';");
+											+ "WHERE Room.idNumber = '" + number + "' GROUP BY 1;");
 
             if(result.first() && result.getString("idNumber") == null)
             	return rooms;
@@ -245,7 +247,7 @@ public class RoomDao {
 											+ "ON Room.id = Coordinate.idRoom\n"
 											+ "INNER JOIN Establishment\n"
 											+ "ON Establishment.id = Room.idEstablishment\n"
-            								+ "WHERE Establishment.name = '" + establishment.getName() + "';");
+            								+ "WHERE Establishment.name = '" + establishment.getName() + "' GROUP BY 1;");
 
             if(result.first() && result.getString("idNumber") == null)
             	return rooms;
@@ -289,7 +291,7 @@ public class RoomDao {
      * 
      * @return a list of RoomModel containing all the room of the floor and establishment in the bdd
      */
-    public List<RoomModel> searchByFloor(EstablishmentModel establishment, int floor) {
+    public List<RoomModel> searchByFloor(int establishmentId, int floor) {
         List<RoomModel> rooms = new ArrayList<RoomModel>();
         Connection connection = null;
         Statement statement = null;
@@ -305,8 +307,8 @@ public class RoomDao {
 											+ "ON Room.id = Coordinate.idRoom\n"
 											+ "INNER JOIN Establishment\n"
 											+ "ON Establishment.id = Room.idEstablishment\n"
-            								+ "WHERE Establishment.name = '" + establishment.getName() + "' "
-            								+ "AND Room.floor = " + floor + ";");
+            								+ "WHERE Establishment.id = '" + establishmentId + "' "
+            								+ "AND Room.floor = " + floor + " GROUP BY 1;");
 
             if(result.first() && result.getString("idNumber") == null)
             	return rooms;
@@ -333,7 +335,7 @@ public class RoomDao {
                 RoomModel room = maxTime != null ? 
                 			new RoomModel(name, idNumber, floor, openingTime, closingTime, maxTime, isBookable, coordinates):
                 			new RoomModel(name, idNumber, floor, openingTime, closingTime, isBookable, coordinates);
-                
+
                 rooms.add(room);
             }
         } catch (SQLException e) {
@@ -364,7 +366,7 @@ public class RoomDao {
             								+ "ON Room.id = Coordinate.idRoom\n"
             								+ "INNER JOIN Establishment\n"
             								+ "ON Establishment.id = Room.idEstablishment\n"
-            								+ "WHERE Room.id = " + id + ";");
+            								+ "WHERE Room.id = " + id + " GROUP BY 1;");
 
             if(result.next() && result.getString("idNumber") != null) {
             	String name = result.getString("roomName");
@@ -395,13 +397,5 @@ public class RoomDao {
         return room;
     }
     
-    public static void main(String[] args) {
-    	DaoFactory daoFactory = DaoFactory.getInstance();
-    	RoomDao roomDao = daoFactory.getRoomDao();
-    	  
-    	RoomModel room = roomDao.searchById(1);
-    	//for(RoomModel room : rooms) {
-    		System.out.println(room.toString());
-    	//}
-    }
+
 }

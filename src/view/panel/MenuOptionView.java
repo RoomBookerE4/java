@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -16,16 +18,21 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import com.toedter.calendar.JDateChooser;
 
+import controller.ReservationController;
 import controller.action.AdminAction;
+import controller.action.MenuOptionAction;
+import dao.DaoFactory;
+import model.EstablishmentModel;
 import model.UserModel;
 import type.AdminOption;
 import type.UserRole;
+import view.MenuView;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 
-public class MenuOptionView extends JPanel implements ActionListener{
+public class MenuOptionView extends JPanel{
 
 	/**
 	 * MENU D'OPTIONS 
@@ -33,11 +40,18 @@ public class MenuOptionView extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	
 	public JFrame frame;
+	public MenuView menuView;
 	public UserModel user;
+	
+	public JComboBox comboBox;
+	public JDateChooser dateChooser;
+	public JFormattedTextField timeTextField;
+	
 		
-	public MenuOptionView(JFrame frame, UserModel user){
+	public MenuOptionView(JFrame frame, MenuView menuView, UserModel user){
 		//super();
 		this.frame = frame;
+		this.menuView = menuView;
 		this.user = user;
 		initComponents();
 	}
@@ -47,71 +61,45 @@ public class MenuOptionView extends JPanel implements ActionListener{
 		
 		//this.setLayout((LayoutManager) new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		JLabel label = new JLabel("panel");  
-		String floors[]={"Floor 0 ","Floor 2","Floor 3","Floor 4"};        
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] {39, 49, 87, 30};
-		gridBagLayout.rowHeights = new int[]{27, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0, 0, 5, 5);
-		gbc.gridx = 1;
-		gbc.gridy = 0;
+		JLabel label = new JLabel("panel");
+		DaoFactory dao = DaoFactory.getInstance();
+		List<String> floorList= new ArrayList<String>();
+		for(int floor : dao.getEstablishmentDao().getFloors(this.user.getEstablishment())) {
+			floorList.add("Floor "+floor);
+		}
+		String floors[]=new String[floorList.size()];
+		floors=floorList.toArray(floors);
+		setLayout(null);
 		JLabel label_1 = new JLabel("Étage");
-		this.add(label_1, gbc);
-		JComboBox comboBox = new JComboBox(floors);
+		label_1.setBounds(166, 5, 34, 16);
+		this.add(label_1);
+		this.comboBox = new JComboBox(floors);
+		comboBox.setBounds(210, 0, 82, 27);
+		this.add(comboBox);
 		
-		//this.add(Box.createRigidArea(new Dimension(5,500)));
-		//this.add(Box.createVerticalStrut(1));
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox.anchor = GridBagConstraints.NORTH;
-		gbc_comboBox.gridx = 2;
-		gbc_comboBox.gridy = 0;
-		this.add(comboBox, gbc_comboBox);
-		
-		JDateChooser dateChooser = new JDateChooser();
+		this.dateChooser = new JDateChooser();
+		dateChooser.setBounds(161, 32, 131, 26);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     	Date date = new Date(System.currentTimeMillis());
 		dateChooser.setDate(Date.valueOf(formatter.format(date)));
-		GridBagConstraints gbc_dateChooser = new GridBagConstraints();
-		gbc_dateChooser.gridwidth = 2;
-		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
-		gbc_dateChooser.fill = GridBagConstraints.BOTH;
-		gbc_dateChooser.gridx = 1;
-		gbc_dateChooser.gridy = 1;
-		add(dateChooser, gbc_dateChooser);
+		add(dateChooser);
 		
 		JButton btnNewButton = new JButton("Valider");
-		btnNewButton.addActionListener(this);
+		btnNewButton.setBounds(183, 94, 87, 29);
+		//btnNewButton.addActionListener(new MenuOptionAction(this));
 		
-		JLabel lblNewLabel = new JLabel("Time");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 2;
-		add(lblNewLabel, gbc_lblNewLabel);
+		JLabel lblTime = new JLabel("Time");
+		lblTime.setBounds(167, 68, 31, 16);
+		add(lblTime);
 		
 		Format timeFormat = new SimpleDateFormat("HH:mm");
-		JFormattedTextField formattedTextField = new JFormattedTextField(timeFormat);
-		formattedTextField.setHorizontalAlignment(SwingConstants.CENTER);
-    	formattedTextField.setText(timeFormat.format(date));
-		GridBagConstraints gbc_formattedTextField = new GridBagConstraints();
-		gbc_formattedTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_formattedTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_formattedTextField.gridx = 2;
-		gbc_formattedTextField.gridy = 2;
-		add(formattedTextField, gbc_formattedTextField);
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridwidth = 2;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 3;
-		add(btnNewButton, gbc_btnNewButton);
+		this.timeTextField = new JFormattedTextField(timeFormat);
+		timeTextField.setBounds(210, 63, 82, 26);
+		this.timeTextField.setHorizontalAlignment(SwingConstants.CENTER);
+		this.timeTextField.setText(timeFormat.format(date));
+		add(this.timeTextField);
+		add(btnNewButton);
+		btnNewButton.addActionListener((ActionListener) new MenuOptionAction(frame, this));
 		
 		//this.add(new JLabel("Test"));
 		//this.setLayout(new GridLayout(20, 2));
@@ -119,25 +107,15 @@ public class MenuOptionView extends JPanel implements ActionListener{
 		
 				
 				JButton btnNewButton_1 = new JButton("Administrator");
+				btnNewButton_1.setBounds(170, 135, 100, 38);
 				
-				
-				GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-				gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-				gbc_btnNewButton_1.gridx = 2;
-				gbc_btnNewButton_1.gridy = 4;
 				
 				if(user.getRole().equals(UserRole.ADM)) {
-					add(btnNewButton_1, gbc_btnNewButton_1);
+					add(btnNewButton_1);
 				}
 				
 				
 				btnNewButton_1.addActionListener((ActionListener) new  AdminAction(frame, this, user, AdminOption.oAdm));
-	}
-
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 	}
 	
 }

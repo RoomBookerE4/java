@@ -133,6 +133,33 @@ public class EstablishmentDao {
         }
         return establishment;
     }
+    
+    public List<Integer> getFloors(int establishmentId) {
+    	List<Integer> floorList = new ArrayList<Integer>();
+    	Connection connection = null;
+        Statement statement = null;
+        ResultSet result = null;
+
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.createStatement();
+            result = statement.executeQuery("SELECT DISTINCT Room.floor "
+										+ "FROM Establishment "
+										+ "INNER JOIN Room ON Room.idEstablishment = Establishment.id "
+										+ "WHERE Establishment.id = '" + establishmentId + "' "
+										+ "ORDER BY floor;");
+            
+            while (result.next()) {
+                int floor = result.getInt("floor");
+                
+                floorList.add(floor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return floorList;
+    }
+    
 
 
     

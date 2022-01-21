@@ -1,32 +1,46 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import model.CoordinateModel;
+import model.DateTime;
+import model.RoomModel;
 import model.UserModel;
 import view.panel.MenuOptionView;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class MenuView extends JFrame{
-	
-
-	// ICI ON AURA LA CARTE AVEC LES SALLES
-	
+		
 	private static final long serialVersionUID = 1L;
 
+	public JFrame frame;
 	public UserModel user;
+	public JLabel picLabel;
 	
 	public MenuView(UserModel user){
 		this.user = user;
@@ -35,39 +49,75 @@ public class MenuView extends JFrame{
 	
 	public void lauchMenu(){
 
-		JFrame frame = new JFrame("Main menu");
+		this.frame = new JFrame("Main menu");
 		
 		((JFrame) frame).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.setLocationRelativeTo(null);
 		frame.setSize(500,250);
 		frame.setVisible(true);
-		frame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		MenuOptionView mOption = new MenuOptionView(frame, this, user);
+		mOption.setVisible(true);
 		BufferedImage myPicture = null;
 		try {
-			
-			//marcelin
-			myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
-			
-			//zara
-			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
+			myPicture = ImageIO.read(new File("ressources/images/id"+this.user.getEstablishment()+"/"+String.valueOf(mOption.comboBox.getSelectedItem())+".png"));
 		} catch(IOException e) {
             e.printStackTrace();
 		}
 		Image dimg = myPicture.getScaledInstance(myPicture.getWidth()/2, myPicture.getHeight()/2,
 		        Image.SCALE_SMOOTH);
-		JLabel picLabel = new JLabel(new ImageIcon(dimg));
-		frame.getContentPane().add(picLabel);
+		this.picLabel = new JLabel(new ImageIcon(dimg));
+		//frame.getContentPane().add(picLabel, BorderLayout.WEST);
+		frame.getContentPane().add(mOption, BorderLayout.EAST);
 		
-		MenuOptionView mOption = new MenuOptionView(frame, user);
-		frame.getContentPane().add(mOption);
+		Dimension frameDim = new Dimension((int)picLabel.getMaximumSize().getWidth() + (int)mOption.getMinimumSize().getWidth()+20, (int)picLabel.getMaximumSize().getHeight()+36);
+		//frame.setSize(frameDim);
+		//frame.setMinimumSize(frameDim);
+		//frame.setMaximumSize(frameDim);
 		
 		
-		Dimension frameDim = new Dimension((int)picLabel.getMaximumSize().getWidth() + (int)mOption.getMinimumSize().getWidth()+20, (int)picLabel.getMaximumSize().getHeight()+26);
-		frame.setSize(frameDim);
-		frame.setMinimumSize(frameDim);
-		frame.setMaximumSize(frameDim);
+	}
+	
+	public class DrawRooms extends JPanel {
+
+		int floorNbr;
+		DateTime dateTime;
+		HashMap<RoomModel, Boolean> availabilityMap;
+
+		public DrawRooms(int floorNbr, DateTime dateTime, HashMap<RoomModel, Boolean> availabilityMap) {
+			super();
+			this.floorNbr = floorNbr;
+			this.dateTime = dateTime;
+			this.availabilityMap = availabilityMap;
+			init();
+		}
+		
+		public void init() {
+			repaint();
+			this.setBackground(Color.BLACK);
+		}
+
+		
+		protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g.create();
+                        
+            for (RoomModel room : availabilityMap.keySet()) {
+				boolean isBooked = availabilityMap.get(room);
+				
+				Polygon poly = new Polygon();
+				
+	            for(CoordinateModel coordinate : room.getCoordinates()) {
+					poly.addPoint(coordinate.getX(), coordinate.getY());
+				}
+	            g2d.setColor(isBooked?Color.RED:Color.GREEN);
+	            g2d.drawPolygon(poly);
+	            g2d.dispose();
+
+			}
+        }
+
 	}
 
 }

@@ -41,70 +41,37 @@ public class MenuOptionView extends JPanel implements ActionListener{
 		//this.setLayout((LayoutManager) new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JLabel label = new JLabel("panel");  
-		String floors[]={"Floor 0 ","Floor 2","Floor 3","Floor 4"};        
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] {39, 49, 87, 30};
-		gridBagLayout.rowHeights = new int[]{27, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
-		
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0, 0, 5, 5);
-		gbc.gridx = 1;
-		gbc.gridy = 0;
+		String floors[]={"Floor 0 ","Floor 2","Floor 3","Floor 4"};
+		setLayout(null);
 		JLabel label_1 = new JLabel("Étage");
-		this.add(label_1, gbc);
+		label_1.setBounds(155, 5, 34, 16);
+		this.add(label_1);
 		JComboBox comboBox = new JComboBox(floors);
-		
-		//this.add(Box.createRigidArea(new Dimension(5,500)));
-		//this.add(Box.createVerticalStrut(1));
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox.anchor = GridBagConstraints.NORTH;
-		gbc_comboBox.gridx = 2;
-		gbc_comboBox.gridy = 0;
-		this.add(comboBox, gbc_comboBox);
+		comboBox.setBounds(199, 0, 104, 27);
+		this.add(comboBox);
 		
 		JDateChooser dateChooser = new JDateChooser();
+		dateChooser.setBounds(150, 32, 153, 26);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     	Date date = new Date(System.currentTimeMillis());
 		dateChooser.setDate(Date.valueOf(formatter.format(date)));
-		GridBagConstraints gbc_dateChooser = new GridBagConstraints();
-		gbc_dateChooser.gridwidth = 2;
-		gbc_dateChooser.insets = new Insets(0, 0, 5, 5);
-		gbc_dateChooser.fill = GridBagConstraints.BOTH;
-		gbc_dateChooser.gridx = 1;
-		gbc_dateChooser.gridy = 1;
-		add(dateChooser, gbc_dateChooser);
+		add(dateChooser);
 		
 		JButton btnNewButton = new JButton("Valider");
+		btnNewButton.setBounds(183, 94, 87, 29);
 		btnNewButton.addActionListener(this);
 		
 		JLabel lblNewLabel = new JLabel("Time");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 2;
-		add(lblNewLabel, gbc_lblNewLabel);
+		lblNewLabel.setBounds(156, 68, 31, 16);
+		add(lblNewLabel);
 		
 		Format timeFormat = new SimpleDateFormat("HH:mm");
 		JFormattedTextField formattedTextField = new JFormattedTextField(timeFormat);
+		formattedTextField.setBounds(199, 63, 104, 26);
 		formattedTextField.setHorizontalAlignment(SwingConstants.CENTER);
     	formattedTextField.setText(timeFormat.format(date));
-		GridBagConstraints gbc_formattedTextField = new GridBagConstraints();
-		gbc_formattedTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_formattedTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_formattedTextField.gridx = 2;
-		gbc_formattedTextField.gridy = 2;
-		add(formattedTextField, gbc_formattedTextField);
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridwidth = 2;
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 3;
-		add(btnNewButton, gbc_btnNewButton);
+		add(formattedTextField);
+		add(btnNewButton);
 		
 		//this.add(new JLabel("Test"));
 		//this.setLayout(new GridLayout(20, 2));
