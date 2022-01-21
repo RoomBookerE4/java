@@ -1,21 +1,15 @@
 package controller.action;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import model.UserModel;
 import type.AdminOption;
 import type.TypeAction;
-import view.MenuAdminView;
-import view.CoordinateAddView;
-import view.EstablishmentView;
-import view.MenuView;
-import view.RoomView;
-import view.panel.MenuOptionAdminView;
+import view.menu.MenuAdminView;
+import view.menu.MenuView;
 
 public class AdminAction extends javax.swing.AbstractAction{
 
@@ -24,7 +18,6 @@ public class AdminAction extends javax.swing.AbstractAction{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static final String NOM_ACTION = "Admin";
 	
 	public JFrame frame;
 	public UserModel user;

@@ -8,8 +8,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controller.EstablishmentController;
-import controller.UserController;
+import dao.DaoFactory;
+import model.EstablishmentModel;
 import model.UserModel;
 import type.TypeAction;
 import view.LoginView;
@@ -30,15 +30,20 @@ public class EstablishmentAction extends AbstractAction{
 	
 	public JFrame frame;
 	
-	private EstablishmentController ec;
-	
 	private UserModel user;
+	
+	private DaoFactory daoFactory = DaoFactory.getInstance();
 	
 	
 	private static final long serialVersionUID = 1L;
 
 	
 	
+	public EstablishmentAction() {
+	}
+
+
+
 	public EstablishmentAction(JTextField nameField, JTextField addressField, JTextField timeOpenField,
 			JTextField timeCloseField, Integer id, String action,  JFrame frame, UserModel user) {
 		super();
@@ -51,6 +56,13 @@ public class EstablishmentAction extends AbstractAction{
 		this.frame= frame;
 		this.user = user;
 	}
+	
+
+
+	public EstablishmentAction(Integer id) {
+		super();
+		this.id = id;
+	}
 
 
 
@@ -58,31 +70,36 @@ public class EstablishmentAction extends AbstractAction{
 	public void actionPerformed(ActionEvent e) {
 		
 		if(action.equals(TypeAction.edit)) {
-			ec = new EstablishmentController( nameField,  addressField,  timeOpenField,timeCloseField);
+			EstablishmentModel establishment = new EstablishmentModel(nameField.getText().toString(), addressField.getText().toString(), 
+					timeOpenField.getText().toString(), timeCloseField.getText().toString());
 			
-			boolean result = ec.editEstablishment(id);
 			
-			if(result) {
+			
+			if(daoFactory.getEstablishmentDao().editEstbalishment(id, establishment)) {
 				JOptionPane.showConfirmDialog(new JPanel(), "Establishment edited!", "", JOptionPane.OK_OPTION);
 			}else {
 				JOptionPane.showConfirmDialog(new JPanel(), "Failed to edit establishemnt", "", JOptionPane.OK_OPTION);
 			}
 			
 		}else if (action.equals(TypeAction.add)) {
-			ec = new EstablishmentController( nameField,  addressField,  timeOpenField,timeCloseField);
 			
-			if(ec.createEstablishment()) {
-				UserController uc= new UserController(user, nameField.getText().toString(), addressField.getText().toString());
+			EstablishmentModel establishment = new EstablishmentModel(nameField.getText().toString(), addressField.getText().toString(), 
+					timeOpenField.getText().toString(), timeCloseField.getText().toString());
 			
-			if(uc.changeIdEstablishment()) {
-				this.frame.dispose();
-				int result =  JOptionPane.showConfirmDialog(new JPanel(), "Establishment created! we will have to restart the application to save changes", "", JOptionPane.OK_OPTION);
-				
-				if(result == JOptionPane.OK_OPTION) {
-					new LoginView();
+			
+			if( daoFactory.getEstablishmentDao().add(establishment)) {
+			
+				if(daoFactory.getUserDao().updatenNewEstablishment(user, nameField.getText().toString(), 
+						addressField.getText().toString())) {
+					
+					this.frame.dispose();
+					int result =  JOptionPane.showConfirmDialog(new JPanel(), "Establishment created! we will have to restart the application to save changes", "", JOptionPane.OK_OPTION);
+					
+					if(result == JOptionPane.OK_OPTION) {
+						new LoginView();
+					}
+					
 				}
-				
-			}
 			
 			}else {
 				JOptionPane.showConfirmDialog(new JPanel(), "Failed to create establishemnt", "", JOptionPane.OK_OPTION);
@@ -92,10 +109,14 @@ public class EstablishmentAction extends AbstractAction{
 		}else if (action.equals(TypeAction.remove)) {
 			
 		}
-			
-		
-		
 		
 	}
+	
+
+	public EstablishmentModel searchById(int id ) {
+		
+		return daoFactory.getEstablishmentDao().searchById(id);
+	}
+
 
 }

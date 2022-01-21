@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import controller.RoomController;
+import controller.action.RoomAction;
 import dao.DaoFactory;
 import model.CoordinateModel;
 import model.RoomModel;
@@ -49,8 +49,6 @@ public class CoordinateAddView {
     public static class Drawing extends JPanel {
 
         private static final Font FONT = new Font("Arial", Font.PLAIN, 12);
-
-        //rivate List<Polygon> polygons = new ArrayList<Polygon>();
         
         private HashMap< String, Polygon> polygonRoom= new HashMap<>();
 
@@ -60,7 +58,11 @@ public class CoordinateAddView {
         
         public static JComboBox roomsBox;
         
+        public JComboBox<?> comboBox;
+        
         public UserModel user = new UserModel("zara ","marks", "administrator", "zara@gmail.com", 1);
+        
+        private DaoFactory dao = DaoFactory.getInstance();
         
       
         private MouseAdapter mouseListener = new MouseAdapter() {
@@ -81,8 +83,31 @@ public class CoordinateAddView {
 
         public Drawing() throws IOException {
             addMouseListener(mouseListener);
-            JButton button = new JButton("Insert database"); 
             
+            List<String> floorList = new ArrayList<String>();
+            for (int floor : dao.getEstablishmentDao().getFloors(this.user.getEstablishment())) {
+    			floorList.add("Floor " + floor);
+    		}
+            String floors[] = new String[floorList.size()];
+    		floors = floorList.toArray(floors);
+    		
+    		this.comboBox = new JComboBox(floors);
+    		comboBox.setBounds(230, 550, 150, 30);
+    		this.add(comboBox);
+    		
+    		  JButton buttonFloor = new JButton("Change  floor"); 
+              
+    		  buttonFloor.setBounds(280, 550, 150, 30);
+    		  buttonFloor.addActionListener((ActionListener) new ActionListener(){  
+             
+      			@Override
+      			public void actionPerformed(ActionEvent e) {
+      				addAll();
+      				
+      			}  
+              });
+              
+            JButton button = new JButton("Insert database"); 
             
             button.setBounds(230, 550, 150, 30);
             button.addActionListener((ActionListener) new ActionListener(){  
@@ -94,8 +119,7 @@ public class CoordinateAddView {
     			}  
             });
             
-           // text = new JTextField("room identifiant");
-             RoomController roomController = new RoomController();
+            RoomAction roomController = new RoomAction();
              
             List<RoomModel> rooms = roomController.searchByEstablishmentId(user.getEstablishment());
     		List<String> roomNumber = new ArrayList<>();
@@ -105,20 +129,20 @@ public class CoordinateAddView {
     			roomNumber.add(rm.getNumber());
     		}
     		List<String> sortedRooms = roomNumber.stream().sorted().collect(Collectors.toList());
-    		//@SuppressWarnings({ "unchecked", "rawtypes" })
+    		
+    		
     		roomsBox = new JComboBox(sortedRooms.toArray());
-    		roomsBox.setBounds(400, 550, 150, 30);
+    		roomsBox.setBounds(400, 550, 100, 30);
     		
             
             JButton button2 = new JButton("Create"); 
             
-            button2.setBounds(600, 550, 150, 30);
+            button2.setBounds(580, 550, 100, 30);
             button2.addActionListener((ActionListener) new ActionListener(){  
            
     			@Override
     			public void actionPerformed(ActionEvent e) {
     				createPolygon();
-    				
     				
     			}  
             });
@@ -130,6 +154,8 @@ public class CoordinateAddView {
             //this.setMinimumSize(new Dimension(myPicture.getWidth()/2 + 14, myPicture.getHeight()/2));
            
         }
+        
+       
 
         protected void addPoint(int x, int y) {
             currentPolygon.addPoint(x, y);
@@ -169,26 +195,9 @@ public class CoordinateAddView {
             }*/
             
             BufferedImage myPicture = null;
+
     		try {
-    			
-    			//marcelin
-    			//myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
-    			
-    			//XXX zara
-    			//ETAGE -1
-    			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE-1.png"));
-    			//ETAGE O 
-    			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE0.png"));
-    			//etage 1
-    			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE1.png"));
-    			//etage 2
-    			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
-    			//etage 3
-    			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE3.png"));
-    			//etage 4
-    			myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE4.png"));
-    			
-    			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
+    			myPicture = ImageIO.read(new File("ressources/images/id"+this.user.getEstablishment()+"/"+String.valueOf(comboBox.getSelectedItem())+".png"));
     		} catch(IOException e) {
                 e.printStackTrace();
     		}
@@ -269,38 +278,14 @@ public class CoordinateAddView {
         	    	
         	});
         	
-        	
-        	/*for(Polygon p: polygons ) {
-        		
-        		int x[] = p.xpoints;
-                int y[] = p.ypoints;
-                
-                for(int i=0; i< x.length;i++) {
-                	if(x[i]!=0 &&  y[i] != 0){
-                		coordinates.add(new CoordinateModel(x[i], y[i], i+1));
-                	}
-                	
-                }
-                
-                //((Graphics) p).setColor(Color.BLUE);
-                
-        	}
-        	
-        	for(CoordinateModel cm : coordinates) {
-        		System.out.println("X"+ cm.getX());
-        		System.out.println("Y"+ cm.getY());
-        		System.out.println("------------------------");
-        	}
-       	 
-       }*/
 
     }
     }
 
     public static void initUI() throws IOException {
     	
-        JFrame frame = new JFrame("test");
-		((JFrame) frame).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JFrame frame = new JFrame("Add coordinates");
+		//((JFrame) frame).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Drawing drawing = new Drawing();
 		//drawing.text.setHorizontalAlignment(SwingConstants.CENTER);
@@ -311,21 +296,7 @@ public class CoordinateAddView {
         BufferedImage myPicture = null;
 		try {
 			
-			//marcelin
-			//myPicture = ImageIO.read(new File("/Users/marcelin/Downloads/271711240_455594239433212_4352364266861532517_n.png"));
-			
-			//XXX zara
-			//ETAGE -1
-			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE-1.png"));
-			//ETAGE O 
-			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE0.png"));
-			//etage 1
-			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE1.png"));
-			//etage 2
-			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE2.png"));
-			//etage 3
-			//myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE3.png"));
-			//etage 4
+
 			myPicture = ImageIO.read(new File("/Users/zaramarks/ETAGE4.png"));
 			
 		} catch(IOException e) {
@@ -339,20 +310,6 @@ public class CoordinateAddView {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
 
-            @Override
-            public void run() {
-                try {
-					initUI();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
-    }
-    
     
 }

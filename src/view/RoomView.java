@@ -10,9 +10,8 @@ import type.TypeAction;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import controller.RoomController;
+import controller.action.RoomAction;
 
-import javax.swing.JList;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -41,7 +40,7 @@ public class RoomView extends JPanel {
 	private JTextField timeOpenField;
 	private JTextField timeCloseField;
 
-	private RoomController roomController = new RoomController();
+	private RoomAction roomAction = new RoomAction();
 
 	public RoomView(UserModel user, String action, JFrame frame) {
 		super();
@@ -134,7 +133,7 @@ public class RoomView extends JPanel {
 		maxTimeBox.setBounds(385, 296, 128, 27);
 		add(maxTimeBox);
 		
-		decision.addActionListener(new RoomController(nameField, numberField, floorField, 
+		decision.addActionListener(new RoomAction(nameField, numberField, floorField, 
 				timeOpenField, timeCloseField, maxTimeBox, isBookableBox, action, user));
 	
 
@@ -142,7 +141,7 @@ public class RoomView extends JPanel {
 
 	public void edit() {
 
-		List<RoomModel> rooms = roomController.searchByEstablishmentId(user.getEstablishment());
+		List<RoomModel> rooms = roomAction.searchByEstablishmentId(user.getEstablishment());
 		List<String> roomNames = new ArrayList<>();
 
 		for (RoomModel rm : rooms) {
@@ -269,13 +268,13 @@ public class RoomView extends JPanel {
 
 		});
 		
-		decision.addActionListener(new RoomController(nameField, numberField, floorField, 
+		decision.addActionListener(new RoomAction(nameField, numberField, floorField, 
 				timeOpenField, timeCloseField, maxTimeBox, isBookableBox, action, user, roomsBox));
 
 	}
 
 	public void view() {
-		List<RoomModel> rooms = roomController.searchByEstablishmentId(user.getEstablishment());
+		List<RoomModel> rooms = roomAction.searchByEstablishmentId(user.getEstablishment());
 		List<String> roomNames = new ArrayList<>();
 
 		for (RoomModel rm : rooms) {
@@ -398,7 +397,7 @@ public class RoomView extends JPanel {
 	}
 
 	public void remove() {
-		List<RoomModel> rooms = roomController.searchByEstablishmentId(user.getEstablishment());
+		List<RoomModel> rooms = roomAction.searchByEstablishmentId(user.getEstablishment());
 		List<String> roomNames = new ArrayList<>();
 
 		for (RoomModel rm : rooms) {

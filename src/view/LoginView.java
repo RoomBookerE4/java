@@ -17,10 +17,7 @@ import javax.swing.JTextField;
 import controller.action.LoginAction;
 
 public class LoginView extends JFrame {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
 	
@@ -33,10 +30,6 @@ public class LoginView extends JFrame {
 	}
 	
 	public void lauchLogin() {
-		
-		
-
-		// TEST
 		
 		
 		JLabel label = new JLabel("LOGIN");  
@@ -80,7 +73,6 @@ public class LoginView extends JFrame {
 		this.setVisible(true);
 	
 		
-		//button.addActionListener(lc.setUsername(loginField.getText()), lc.setPassword(new String(passwordField.toString()))); 
 		button.addActionListener(new  LoginAction(this, emailField, passwordField));
 		
 		

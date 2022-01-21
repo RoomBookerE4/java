@@ -1,6 +1,5 @@
 package view.panel;
 
-import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,6 +18,7 @@ public class MenuOptionAdminView extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	public  static JComboBox<Object> comboBox;
 	
 	public JFrame frame;
@@ -36,7 +36,7 @@ public class MenuOptionAdminView extends JPanel{
 	
 	public void initComponents() {
 		
-		comboBox = new JComboBox();
+		comboBox = new JComboBox<Object>();
 		
 		if(user.getEstablishment() == null) {
 			comboBox.addItem(AdminOption.establishment) ;

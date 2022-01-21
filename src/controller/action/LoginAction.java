@@ -11,8 +11,7 @@ import javax.swing.JTextField;
 import dao.DaoFactory;
 import model.LoginModel;
 import model.UserModel;
-import view.LoginView;
-import view.MenuView;
+import view.menu.MenuView;
 
 public class LoginAction extends javax.swing.AbstractAction{
 
@@ -21,8 +20,6 @@ public class LoginAction extends javax.swing.AbstractAction{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static final String NOM_ACTION = "Login";
-	public static boolean looged = false;
 	
 	public Frame frame;
 	public UserModel userModel;
@@ -31,7 +28,6 @@ public class LoginAction extends javax.swing.AbstractAction{
 	private  JPasswordField passwordField;
 	
 	public LoginAction(Frame frame) {
-		 super(NOM_ACTION);
 		 this.frame = frame;
 	}
 	
@@ -61,13 +57,12 @@ public class LoginAction extends javax.swing.AbstractAction{
 		 userModel = daoFactory.getLoginDao().verify(loginModel);
 		
 		 if(userModel !=null) {
-			 this.looged = true;
 			 frame.dispose();
 			 new MenuView(userModel);
 			 
 		 }else {
 			 JOptionPane.showConfirmDialog(new JPanel(), "User not found",
-			         NOM_ACTION, JOptionPane.YES_NO_OPTION);
+			         "", JOptionPane.CANCEL_OPTION);
 		 }
 	}
 

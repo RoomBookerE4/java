@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.CoordinateModel;
-import model.RoomModel;
 
 public class CoordinateDao {
 	

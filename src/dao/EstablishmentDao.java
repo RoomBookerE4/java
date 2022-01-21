@@ -25,7 +25,6 @@ public class EstablishmentDao {
     public boolean add(EstablishmentModel establishment) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ResultSet result = null;
         try {
             connection = daoFactory.getConnection();
             preparedStatement = connection.prepareStatement("INSERT INTO Establishment(name, address, timeOpen, timeClose) "

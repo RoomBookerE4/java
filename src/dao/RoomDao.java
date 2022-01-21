@@ -428,6 +428,78 @@ public class RoomDao {
     	return rooms;
     }
     
+    
+    public HashMap<RoomModel, Boolean> listRoomWithStatus(int establishmentId, int floor, DateTime time) {
+        HashMap<RoomModel, Boolean> availability = new HashMap<RoomModel, Boolean>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet result = null;
+
+        try {
+            connection = daoFactory.getConnection();
+            statement = connection.createStatement();
+            result = statement.executeQuery("SELECT\n"
+            		+ "    Room.name AS roomName,\n"
+            		+ "    idNumber,\n"
+            		+ "    Room.timeOpen AS roomTimeOpen,\n"
+            		+ "    Room.timeClose AS roomTimeClose,\n"
+            		+ "    isBookable,\n"
+            		+ "    maxTime,\n"
+            		+ "    FLOOR,\n"
+            		+ "    Establishment.timeOpen AS establishmentTimeOpen,\n"
+            		+ "    Establishment.timeClose AS establishmentTimeClose,\n"
+            		+ "    GROUP_CONCAT(\n"
+            		+ "        JSON_OBJECT(\n"
+            		+ "            'x',\n"
+            		+ "            Coordinate.x,\n"
+            		+ "            'y',\n"
+            		+ "            Coordinate.y,\n"
+            		+ "            'line',\n"
+            		+ "            Coordinate.line\n"
+            		+ "        )\n"
+            		+ "    ) AS coordinates,\n"
+            		+ "    COUNT(Reservation.id) AS isBooked\n"
+            		+ "FROM\n"
+            		+ "    Room\n"
+            		+ "INNER JOIN Coordinate ON Room.id = Coordinate.idRoom\n"
+            		+ "INNER JOIN Establishment ON Establishment.id = Room.idEstablishment\n"
+            		+ "LEFT OUTER JOIN Reservation ON Reservation.idRoom = Room.id AND timeEnd > '" + time.toString() + "' AND timeStart < '" + time.toString() + "'\n"
+            		+ "WHERE\n"
+            		+ "    Establishment.id = " + establishmentId + " AND Room.floor = " + floor + "\n"
+            		+ "GROUP BY 1;");
+            
+            while (result.next()) {
+            	String name = result.getString("roomName");
+            	String idNumber = result.getString("idNumber");
+                Time openingTime = result.getTime("roomTimeOpen") != null ? result.getTime("roomTimeOpen") : result.getTime("establishmentTimeOpen");
+                Time closingTime = result.getTime("roomTimeClose") != null ? result.getTime("roomTimeClose") : result.getTime("establishmentTimeClose");
+                boolean isBookable = result.getBoolean("isBookable");
+                Time maxTime = result.getTime("maxTime");
+                JSONArray coordinatesJson = new JSONArray("["+result.getString("coordinates")+"]");
+                boolean isBooked = result.getInt("isBooked") == 0 ? false : true;
+                
+                List<CoordinateModel> coordinates = new ArrayList<CoordinateModel>();
+                if(coordinatesJson.length() > 1 && coordinatesJson.get(0) != null) {
+                	for(int i=0; i<coordinatesJson.length(); i++) {
+	                	JSONObject json = coordinatesJson.getJSONObject(i);
+	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
+                	}
+                	coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
+                }
+                
+                RoomModel room = maxTime != null ? 
+                			new RoomModel(name, idNumber, floor, openingTime, closingTime, maxTime, isBookable, coordinates):
+                			new RoomModel(name, idNumber, floor, openingTime, closingTime, isBookable, coordinates);
+                
+                availability.put(room, isBooked);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return availability;	
+    }
+    
+    
     public boolean addRoom(RoomModel room, int establishment_id) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

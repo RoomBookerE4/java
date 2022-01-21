@@ -1,24 +1,17 @@
 package controller.action;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 
 import model.UserModel;
 import type.AdminOption;
 import type.TypeAction;
 import view.CoordinateAddView;
 import view.EstablishmentView;
-import view.MenuAdminView;
 import view.RoomView;
 import view.panel.MenuOptionAdminView;
 
@@ -78,7 +71,7 @@ public class MenuAdminAction extends AbstractAction{
 			
 			frame.getContentPane().add(panel, BorderLayout.NORTH);
 			frame.getContentPane().add(rv, BorderLayout.CENTER);
-			rv.setVisible(true);
+			//rv.setVisible(true);
 			
 			MenuOptionAdminView.comboBox.setSelectedIndex(1);
 			//System.out.println(MenuOptionAdminView.comboBox);

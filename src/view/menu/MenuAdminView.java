@@ -1,15 +1,16 @@
-package view;
+package view.menu;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import controller.action.AdminAction;
 import model.UserModel;
-import type.AdminOption;
 import view.panel.MenuOptionAdminView;
 
 public class MenuAdminView extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public UserModel user;
 	
 	public MenuAdminView(UserModel user) {
@@ -30,11 +31,7 @@ public class MenuAdminView extends JFrame{
 		this.setSize(700,500);
 		this.setVisible(true);
 		
-		
 	
-		//establishment.addActionListener(new  AdminAction(this,user, AdminActionType.oEstabliAdm));
-		//room.addActionListener(new  AdminAction(this,user, AdminActionType.oRoomAdm));
-		//coordinate.addActionListener(new  AdminAction(this,user, AdminActionType.oCoordinateAdm));
 	}
 
 }

@@ -1,11 +1,9 @@
 package controller.action;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Image;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,19 +16,11 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
-import controller.ReservationController;
 import dao.DaoFactory;
 import model.DateTime;
-import model.EstablishmentModel;
-import model.LoginModel;
 import model.RoomModel;
-import model.UserModel;
-import view.LoginView;
-import view.MenuView;
-import view.MenuView.DrawRooms;
+import view.panel.DrawRooms;
 import view.panel.MenuOptionView;
 
 public class MenuOptionAction extends javax.swing.AbstractAction{
@@ -41,6 +31,7 @@ public class MenuOptionAction extends javax.swing.AbstractAction{
 	
 	public Frame frame;
 	public MenuOptionView menuOptionView;
+	public DaoFactory daoFactory;
 	
 	public MenuOptionAction(Frame frame, MenuOptionView menuOptionView) {
 		 super(NOM_ACTION);
@@ -50,6 +41,7 @@ public class MenuOptionAction extends javax.swing.AbstractAction{
 	
 	
 	public void actionPerformed(ActionEvent e) {
+		
 		String floorName = String.valueOf(menuOptionView.comboBox.getSelectedItem());
 		int floorNbr = Integer.valueOf(floorName.split(" ")[1]);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -59,26 +51,28 @@ public class MenuOptionAction extends javax.swing.AbstractAction{
 		
 		menuOptionView.menuView.frame.getContentPane().removeAll();
 		menuOptionView.menuView.frame.getContentPane().repaint();
-		//updateImage();
-		menuOptionView.menuView.frame.getContentPane().add(menuOptionView, BorderLayout.EAST);
+		updateImage();
+		menuOptionView.menuView.frame.getContentPane().add(menuOptionView, BorderLayout.NORTH);
 		
-		HashMap<RoomModel, Boolean> availabilityMap = ReservationController.getAvailabilities(menuOptionView.user.getEstablishment(), floorNbr, dateTime);
-		DrawRooms drawRooms = menuOptionView.menuView.new DrawRooms(floorNbr, dateTime, availabilityMap);
 		
-		menuOptionView.menuView.frame.getContentPane().add(drawRooms, BorderLayout.CENTER);
-		//menuOptionView.menuView.frame.getContentPane().revalidate();
-		//menuOptionView.menuView.frame.getContentPane().repaint();
+		daoFactory = DaoFactory.getInstance();
+		HashMap<RoomModel, Boolean> availabilityMap = daoFactory.getRoomDao().listRoomWithStatus(menuOptionView.user.getEstablishment(), floorNbr, dateTime);
+		DrawRooms drawRooms = new DrawRooms(floorNbr, dateTime, availabilityMap, menuOptionView);
+		
+		menuOptionView.menuView.frame.add(drawRooms, BorderLayout.CENTER);
 	}
 	
 	
 	
 	public void updateImage() {
 		BufferedImage myPicture = null;
+		
 		try {
 			myPicture = ImageIO.read(new File("ressources/images/id"+menuOptionView.user.getEstablishment()+"/"+String.valueOf(menuOptionView.comboBox.getSelectedItem())+".png"));
 		} catch(IOException e) {
             e.printStackTrace();
 		}
+		
 		Image dimg = myPicture.getScaledInstance(myPicture.getWidth()/2, myPicture.getHeight()/2,
 		        Image.SCALE_SMOOTH);
 		menuOptionView.menuView.picLabel = new JLabel(new ImageIcon(dimg));
@@ -86,8 +80,6 @@ public class MenuOptionAction extends javax.swing.AbstractAction{
 
 		Dimension frameDim = new Dimension((int)menuOptionView.menuView.picLabel.getMaximumSize().getWidth() + (int)menuOptionView.getMinimumSize().getWidth()+20, (int)menuOptionView.menuView.picLabel.getMaximumSize().getHeight()+36);
 		menuOptionView.menuView.frame.setSize(frameDim);
-		menuOptionView.menuView.frame.setMinimumSize(frameDim);
-		menuOptionView.menuView.frame.setMaximumSize(frameDim);
 
 	}
 

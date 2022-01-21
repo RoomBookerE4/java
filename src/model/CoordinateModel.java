@@ -2,10 +2,9 @@ package model;
 
 public class CoordinateModel {
 
-	public int x, y, line;
+	public int x, y, line, idSalle;
 
 	public String name;
-	int idSalle;
 
 	public CoordinateModel(int x, int y) {
 		this.x = x;

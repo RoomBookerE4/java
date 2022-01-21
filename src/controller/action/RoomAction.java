@@ -1,4 +1,4 @@
-package controller;
+package controller.action;
 
 import java.awt.event.ActionEvent;
 import java.sql.Time;
@@ -16,7 +16,12 @@ import model.RoomModel;
 import model.UserModel;
 import type.TypeAction;
 
-public class RoomController extends AbstractAction{
+public class RoomAction extends AbstractAction{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	public JTextField nameField;
 	public JTextField numberField;
@@ -34,13 +39,13 @@ public class RoomController extends AbstractAction{
 	
 	DaoFactory daoFactory = DaoFactory.getInstance();
 	
-	public RoomController() {
+	public RoomAction() {
 		
 	}
 	
 
 
-	public RoomController(JTextField nameField, JTextField numberField, JTextField floorField, JTextField timeOpenField,
+	public RoomAction(JTextField nameField, JTextField numberField, JTextField floorField, JTextField timeOpenField,
 			JTextField timeCloseField, JComboBox<?> maxTimeBox, JCheckBox isBookableBox, String action, UserModel user) {
 		super();
 		this.nameField = nameField;
@@ -54,7 +59,7 @@ public class RoomController extends AbstractAction{
 		this.user =user;
 	}
 	
-	public RoomController(JTextField nameField, JTextField numberField, JTextField floorField, JTextField timeOpenField,
+	public RoomAction(JTextField nameField, JTextField numberField, JTextField floorField, JTextField timeOpenField,
 			JTextField timeCloseField, JComboBox<?> maxTimeBox, JCheckBox isBookableBox, String action, UserModel user, JComboBox roomNameToChange) {
 		super();
 		this.nameField = nameField;
