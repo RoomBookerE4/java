@@ -11,7 +11,7 @@ import model.UserModel;
 import type.AdminOption;
 import type.TypeAction;
 import view.MenuAdminView;
-import view.CoordinateView;
+import view.CoordinateAddView;
 import view.EstablishmentView;
 import view.MenuView;
 import view.RoomView;

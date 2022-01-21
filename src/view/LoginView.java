@@ -25,8 +25,8 @@ public class LoginView extends JFrame {
 	
 	
 	
-	public static JTextField emailField;
-	public static JPasswordField passwordField;
+	public  JTextField emailField;
+	public  JPasswordField passwordField;
 	
 	public LoginView() {
 		lauchLogin();
@@ -81,7 +81,7 @@ public class LoginView extends JFrame {
 	
 		
 		//button.addActionListener(lc.setUsername(loginField.getText()), lc.setPassword(new String(passwordField.toString()))); 
-		button.addActionListener(new  LoginAction(this));
+		button.addActionListener(new  LoginAction(this, emailField, passwordField));
 		
 		
 		

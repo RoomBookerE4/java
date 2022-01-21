@@ -48,7 +48,7 @@ public class RoomDao {
             preparedStatement.setString(6, room.getMaxBookingTime().toString());
             preparedStatement.setString(7, establishment.getName().toString());
             
-            this.daoFactory.getCoordinateDao().addCoordinates(room.getCoordinates(), room);
+            this.daoFactory.getCoordinateDao().addCoordinates(room.getCoordinates(), room.getNumber());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -97,7 +97,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
 	                }
-	                coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+	                coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -154,7 +154,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
 	                }
-	                coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+	                coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -211,7 +211,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
 	                }
-	                coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+	                coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -269,7 +269,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
 	                }
-	                coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+	                coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -329,7 +329,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
                 	}
-                	coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+                	coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -384,7 +384,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
                 	}
-                	coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+                	coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
 
                 room = maxTime != null ? 
@@ -397,5 +397,99 @@ public class RoomDao {
         return room;
     }
     
+    public  List<RoomModel> searchByEstablishmentId(int idEstablishment) {
+    	 Connection connection = null;
+         Statement statement = null;
+         ResultSet result = null;
+         List<RoomModel> rooms = new ArrayList<RoomModel>();
+         try {
+             connection = daoFactory.getConnection();
+             statement = connection.createStatement();
+             result = statement.executeQuery("SELECT Room.name AS roomName, idNumber, Room.timeOpen AS roomTimeOpen, Room.timeClose AS roomTimeClose, isBookable, maxTime, floor "
+            		 						+ "FROM Room "
+             								+ "WHERE idEstablishment = " + idEstablishment + ";");
 
+             while (result.next()) {
+             	String name = result.getString("roomName");
+            	String idNumber = result.getString("idNumber");
+                Time openingTime = result.getTime("roomTimeOpen");
+                Time closingTime = result.getTime("roomTimeClose") ;
+                boolean isBookable = result.getBoolean("isBookable");
+                Time maxTime = result.getTime("maxTime");
+                int floor = result.getInt("floor");
+                
+                RoomModel room = new RoomModel(name, idNumber, floor, openingTime, closingTime, maxTime, isBookable);
+                rooms.add(room);
+             }
+     
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+    	return rooms;
+    }
+    
+    public boolean addRoom(RoomModel room, int establishment_id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = daoFactory.getConnection();
+            preparedStatement = connection.prepareStatement("INSERT INTO Room(name, idNumber, timeOpen, timeClose, isBookable, maxTime, idEstablishment, floor) "
+            												+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?);");
+            
+            preparedStatement.setString(1, room.getName());
+            preparedStatement.setString(2, room.getNumber());
+            preparedStatement.setString(3, room.getOpeningTime().toString());
+            preparedStatement.setString(4, room.getClosingTime().toString());
+            preparedStatement.setBoolean(5, room.isBookable);
+            preparedStatement.setString(6, room.getMaxBookingTime().toString());
+            preparedStatement.setInt(7, establishment_id);
+            preparedStatement.setInt(8, room.getFloor());
+            
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+    
+    public boolean editRoom(RoomModel room, String roomName) {
+    	 Connection connection = null;
+         PreparedStatement preparedStatement = null;
+         boolean done= true;
+
+         try {
+             connection = daoFactory.getConnection();
+             preparedStatement = connection.prepareStatement("UPDATE Room"
+             		+ " SET name = ? , idNumber = ?, timeOpen = ? ,  timeClose = ? , isBookable= ?, maxTime = ?, floor =?"
+             		+ " WHERE name =  ?;");
+             preparedStatement.setString(1, room.getName());
+             preparedStatement.setString(2, room.getNumber());
+             preparedStatement.setString(3, room.getOpeningTime().toString());
+             preparedStatement.setString(4, room.getClosingTime().toString());
+             preparedStatement.setBoolean(5, room.isBookable);
+             preparedStatement.setString(6, room.getMaxBookingTime().toString());
+             preparedStatement.setInt(7, room.getFloor());
+             preparedStatement.setString(8, roomName);
+             preparedStatement.executeUpdate();
+             return done;
+         } catch (SQLException e) {
+        	 done = false;
+             e.printStackTrace();
+             return done;
+         }
+    }
+	
+    
+    public static void main(String[] args) {
+    	DaoFactory daoFactory = DaoFactory.getInstance();
+    	RoomDao roomDao = daoFactory.getRoomDao();
+    	  
+    	RoomModel room = roomDao.searchById(1);
+    	//for(RoomModel room : rooms) {
+    		System.out.println(room.toString());
+    	//}
+    }
 }

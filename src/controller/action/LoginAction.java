@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import dao.DaoFactory;
 import model.LoginModel;
@@ -25,6 +27,8 @@ public class LoginAction extends javax.swing.AbstractAction{
 	public Frame frame;
 	public UserModel userModel;
 	
+	private JTextField login;
+	private  JPasswordField passwordField;
 	
 	public LoginAction(Frame frame) {
 		 super(NOM_ACTION);
@@ -33,25 +37,32 @@ public class LoginAction extends javax.swing.AbstractAction{
 	
 
 
+	public LoginAction(Frame frame, JTextField login, JPasswordField passwordField) {
+		super();
+		this.frame = frame;
+		this.login = login;
+		this.passwordField = passwordField;
+	}
+
+
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		
-		String email = LoginView.emailField.getText();
-		String password =new String(LoginView.passwordField.getPassword());
+		String email = login.getText();
+		String password =new String(passwordField.getPassword());
 		
 		 
 		 LoginModel loginModel = new LoginModel(email, password);
 		 
 		 DaoFactory daoFactory = DaoFactory.getInstance();
 		 
-		  userModel = daoFactory.getLoginDao().verify(loginModel);
+		 userModel = daoFactory.getLoginDao().verify(loginModel);
 		
 		 if(userModel !=null) {
 			 this.looged = true;
 			 frame.dispose();
-			 /*int reponse = JOptionPane.showConfirmDialog(new JPanel(), "hello"  + email,
-			         NOM_ACTION, JOptionPane.YES_NO_OPTION);*/
 			 new MenuView(userModel);
 			 
 		 }else {

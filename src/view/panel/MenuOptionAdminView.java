@@ -1,5 +1,7 @@
 package view.panel;
 
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -17,7 +19,7 @@ public class MenuOptionAdminView extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static JComboBox comboBox;
+	public  static JComboBox<Object> comboBox;
 	
 	public JFrame frame;
 	public UserModel user;
@@ -29,21 +31,21 @@ public class MenuOptionAdminView extends JPanel{
 		initComponents();
 	}
 	
+
 	
 	
 	public void initComponents() {
 		
-		String options[] = new String[3];
+		comboBox = new JComboBox();
 		
 		if(user.getEstablishment() == null) {
-			options[0] = AdminOption.establishment;
+			comboBox.addItem(AdminOption.establishment) ;
 		}else {
-			options[0] = AdminOption.establishment;
-			options[1] = AdminOption.room;
-			options[2] = AdminOption.coordinate;
+			comboBox.addItem(AdminOption.establishment);
+			comboBox.addItem(AdminOption.room);
+			comboBox.addItem(AdminOption.coordinate);
 		}
 		
-		comboBox = new JComboBox<Object>(options);
 		
 		JButton add= new JButton("add");
 		JButton remove= new JButton("remove");
@@ -55,7 +57,7 @@ public class MenuOptionAdminView extends JPanel{
 		this.add(add);
 		this.add(edit);
 		this.add(view);
-		this.add(remove);
+		//this.add(remove);
 		this.add(back);
 		
 		

@@ -27,7 +27,7 @@ public class MenuAdminView extends JFrame{
 		
 		this.add(panel, java.awt.BorderLayout.NORTH);
 		this.setLocationRelativeTo(null);
-		this.setSize(800,800);
+		this.setSize(700,500);
 		this.setVisible(true);
 		
 		

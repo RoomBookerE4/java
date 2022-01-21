@@ -9,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +36,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 
 public class MenuOptionView extends JPanel{
+
 
 	/**
 	 * MENU D'OPTIONS 
@@ -70,6 +74,7 @@ public class MenuOptionView extends JPanel{
 		String floors[]=new String[floorList.size()];
 		floors=floorList.toArray(floors);
 		setLayout(null);
+
 		JLabel label_1 = new JLabel("Étage");
 		label_1.setBounds(166, 5, 34, 16);
 		this.add(label_1);

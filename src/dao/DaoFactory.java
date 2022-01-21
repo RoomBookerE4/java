@@ -52,4 +52,8 @@ public class DaoFactory {
     public LoginDao getLoginDao() {
         return new LoginDao(this);
     }
+    
+    public UserDao getUserDao() {
+    	return new UserDao(this);
+    }
 }
