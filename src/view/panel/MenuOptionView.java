@@ -138,8 +138,6 @@ public class MenuOptionView extends JPanel implements ActionListener{
 				
 				
 				btnNewButton_1.addActionListener((ActionListener) new  AdminAction(frame, this, user, AdminOption.oAdm));
-		
-		
 	}
 
 

@@ -57,7 +57,7 @@ public class MenuOptionAdminView extends JPanel{
 		this.add(add);
 		this.add(edit);
 		this.add(view);
-		this.add(remove);
+		//this.add(remove);
 		this.add(back);
 		
 		

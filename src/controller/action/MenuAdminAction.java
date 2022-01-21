@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
@@ -14,6 +15,8 @@ import javax.swing.JPanel;
 
 import model.UserModel;
 import type.AdminOption;
+import type.TypeAction;
+import view.CoordinateAddView;
 import view.EstablishmentView;
 import view.MenuAdminView;
 import view.RoomView;
@@ -78,6 +81,18 @@ public class MenuAdminAction extends AbstractAction{
 			rv.setVisible(true);
 			
 			MenuOptionAdminView.comboBox.setSelectedIndex(1);
+			//System.out.println(MenuOptionAdminView.comboBox);
+		}else if(MenuOptionAdminView.comboBox.getSelectedItem().toString().equals(AdminOption.coordinate)) {
+			
+			
+			if(action.equals(TypeAction.add)) {
+				try {
+					CoordinateAddView.initUI();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 			//System.out.println(MenuOptionAdminView.comboBox);
 		}
 		

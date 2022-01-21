@@ -46,7 +46,7 @@ public class RoomDao {
             preparedStatement.setString(6, room.getMaxBookingTime().toString());
             preparedStatement.setString(7, establishment.getName().toString());
             
-            this.daoFactory.getCoordinateDao().addCoordinates(room.getCoordinates());
+            this.daoFactory.getCoordinateDao().addCoordinates(room.getCoordinates(), room.getNumber());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -95,7 +95,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
 	                }
-	                coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+	                coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -152,7 +152,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
 	                }
-	                coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+	                coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -209,7 +209,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
 	                }
-	                coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+	                coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -267,7 +267,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
 	                }
-	                coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+	                coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -327,7 +327,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
                 	}
-                	coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+                	coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
                 
                 RoomModel room = maxTime != null ? 
@@ -382,7 +382,7 @@ public class RoomDao {
 	                	JSONObject json = coordinatesJson.getJSONObject(i);
 	                	coordinates.add(new CoordinateModel(json.getInt("x"), json.getInt("y"), json.getInt("line")));
                 	}
-                	coordinates.sort(Comparator.comparing(CoordinateModel::getOrder));
+                	coordinates.sort(Comparator.comparing(CoordinateModel::getLine));
                 }
 
                 room = maxTime != null ? 
