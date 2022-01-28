@@ -3,6 +3,10 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
+
+import model.EstablishmentModel;
+import view.MainApp;
 
 public class DaoFactory {
     private String url;
@@ -25,7 +29,7 @@ public class DaoFactory {
         }
         
         DaoFactory instance = new DaoFactory(
-                "jdbc:mariadb://mysql-calendrier2020.alwaysdata.net:3306/calendrier2020_roombooker", "204456_roombook", "roomBooker1234$");
+                "jdbc:mariadb://192.168.4.105:3306/roombooker", "roombooker_user", "network"); 
         return instance;
     }
 
@@ -56,4 +60,14 @@ public class DaoFactory {
     public UserDao getUserDao() {
     	return new UserDao(this);
     }
+    
+    public static void main(String[] args){
+    	DaoFactory dao = DaoFactory.getInstance();
+    	
+    	List<EstablishmentModel> list = dao.getEstablishmentDao().list();
+    	for (EstablishmentModel esta : list) {
+    		System.out.println(esta.toString());
+    	}
+	}
+
 }
